@@ -1,0 +1,19 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="640" height="498" viewBox="0 0 640 498" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="SVG - Subtle Grid Lines for Astronomical Cartography" opacity="0.1" clip-path="url(#clip0_0_38)">
+<path id="Vector" d="M32 249C32 372.684 161.048 473.1 320 473.1C478.952 473.1 608 372.684 608 249C608 125.316 478.952 24.9 320 24.9C161.048 24.9 32 125.316 32 249V249" stroke="#A7C8FF" stroke-dasharray="4 6"/>
+<path id="Vector_2" d="M128 249C128 331.456 214.032 398.4 320 398.4C425.968 398.4 512 331.456 512 249C512 166.544 425.968 99.6 320 99.6C214.032 99.6 128 166.544 128 249V249" stroke="#FFDBA0"/>
+<g id="Vector_3">
+<path d="M0 249H640H0" fill="black"/>
+<path d="M0 249H640H0" stroke="#A7C8FF" stroke-width="0.5"/>
+</g>
+<g id="Vector_4">
+<path d="M320 0V498V0" fill="black"/>
+<path d="M320 0V498V0" stroke="#A7C8FF" stroke-width="0.5"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_0_38">
+<rect width="640" height="498" fill="white"/>
+</clipPath>
+</defs>
+</svg>

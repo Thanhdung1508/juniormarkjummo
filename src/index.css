@@ -1,0 +1,80 @@
+/* Màu dùng chung: sửa tại đây sẽ áp dụng đồng bộ toàn bộ trang và dialog. */
+:root {
+  color-scheme: dark;
+  --bg: #0f131d;
+  --panel: #171b26;
+  --surface: #262a35;
+  --deep: #0a0e18;
+  --text: #dfe2f1;
+  --muted: #c1b4a2;
+  --heading: #ffdba0;
+  --accent: #ffb703;
+  --accent-ink: #553900;
+  --blue: #a7c8ff;
+  --pink: #ffd6d5;
+  --border: #ffffff12;
+  --gold-border: #ffdba026;
+  --nav: #0a0e1899;
+  --header: #171b26ed;
+  --shadow: 0 18px 50px #00000038;
+  --glow: #ffb7030a;
+  --error: #ffb2ab;
+  --error-bg: #742b3029;
+  --success-bg: #153b332f;
+  --success: #b4e7c7;
+  font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+/* Chế độ sáng theo yêu cầu: kem, be, nâu ấm; không dùng nền trắng. */
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f0e4d2;
+  --panel: #e9dac2;
+  --surface: #dfcdb1;
+  --deep: #e2d1b7;
+  --text: #3e3026;
+  --muted: #705942;
+  --heading: #654019;
+  --accent: #dca42f;
+  --accent-ink: #392706;
+  --blue: #385c7a;
+  --pink: #8e4c50;
+  --border: #77552d29;
+  --gold-border: #97713944;
+  --nav: #d5c1a477;
+  --header: #ecdec9f2;
+  --shadow: 0 16px 40px #74552c18;
+  --glow: #c88e2412;
+  --error: #982f2d;
+  --error-bg: #ae3a2910;
+  --success-bg: #43784615;
+  --success: #275532;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 110px; }
+body { margin: 0; min-width: 0; }
+button, input { font: inherit; }
+button, a, input { -webkit-tap-highlight-color: transparent; }
+button { cursor: pointer; }
+button { color: inherit; }
+button:disabled { cursor: not-allowed; opacity: .5; }
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button, a { touch-action: manipulation; }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { font-family: 'Playfair Display', Georgia, 'Times New Roman', serif; font-weight: 500; color: var(--heading); }
+p { line-height: 1.7; }
+button, a, input { transition: background-color .2s, border-color .2s, color .2s; }
+::selection { background: var(--accent); color: var(--accent-ink); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.skip-link { position: fixed; top: -100px; left: 20px; z-index: 100; background: var(--accent); color: var(--accent-ink); padding: 12px 20px; border-radius: 8px; }
+.skip-link:focus { top: 12px; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
