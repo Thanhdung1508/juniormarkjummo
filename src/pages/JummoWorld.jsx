@@ -29,9 +29,9 @@ export default function JummoWorld({ showInfo, openPhoto }) {
     setRain((v) => !v)
   }
   const moods = {
-    music: ['Jummo Headphone', 'Đắm chìm trong tiếng guitar và một giai điệu ấm áp.', '🎧'],
-    book: ['Jummo Storybook', 'Một góc yên tĩnh để đọc sách và lưu lại câu chuyện.', '📖'],
-    heart: ['Sunflower Heart', 'Gửi thật nhiều yêu thương tới JuniorMark và bạn.', '💛'],
+    music: ['Jummo Headphone', 'Đắm chìm trong tiếng guitar và một giai điệu ấm áp.', '/jummo_dance.gif'],
+    book: ['Jummo Storybook', 'Một góc yên tĩnh để đọc sách và lưu lại câu chuyện.', '/reading.gif'],
+    heart: ['Sunflower Heart', 'Gửi thật nhiều yêu thương tới JuniorMark và bạn.', '/hugging.gif'],
   }
   const letter =
     'Gửi các vì sao thân yêu,\nMột ngày dù bận rộn đến đâu, mong bạn vẫn giữ cho mình một khoảng bình yên. Cảm ơn bạn đã mang âm nhạc và nụ cười đến góc nhỏ này.\n— Lời nhắn biên tập của fansite, không phải thư thật của nghệ sĩ.'
@@ -67,8 +67,7 @@ export default function JummoWorld({ showInfo, openPhoto }) {
       <div className="two-columns">
         <section className="archive-panel mascot-stage">
           <button aria-label="Chạm Jummo mở thư" onClick={() => setTaps((n) => Math.min(5, n + 1))}>
-            <img src="/images/jummo-mascot.png" alt="Jummo Mascot" />
-            <span className="mood-accessory">{moods[mood][2]}</span>
+            <img src={moods[mood][2]} alt={moods[mood][0]} />
           </button>
           <p>
             {moods[mood][0]} • Chạm {taps}/5
@@ -80,7 +79,13 @@ export default function JummoWorld({ showInfo, openPhoto }) {
             label="Tâm trạng Jummo"
             value={mood}
             onChange={setMood}
-            options={Object.entries(moods).map(([id, m]) => [id, `${m[2]} ${m[0]}`])}
+            options={Object.entries(moods).map(([id, m]) => [
+              id,
+              <span className="mood-option" key={id}>
+                <img src={m[2]} alt="" width="40" height="40" />
+                {m[0]}
+              </span>,
+            ])}
           />
           <h3 aria-live="polite">{moods[mood][1]}</h3>
           <div className="profile-tags">

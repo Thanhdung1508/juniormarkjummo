@@ -34,7 +34,7 @@ export default function RecordPlayer() {
     <div className="turntable">
       <div className="album-sleeve"><img src="/images/fan-photos/HNwNJ4GbsAE5PwW.jpg" alt="JuniorMark trên bìa đĩa" loading="lazy" /></div>
       <div className={`vinyl ${playing ? 'playing' : ''}`} aria-hidden="true"><div className="vinyl-label"><span>SIDE A • 33 RPM</span><strong>JuniorMark</strong><small>SUN & MOON</small><i /></div></div>
-      <div className="tonearm" aria-hidden="true"><i /></div>
+      <div className={`tonearm ${playing ? 'playing' : ''}`} aria-hidden="true"><i /></div>
       <div className="turntable-meta"><span>● ANALOG HEART • DIGITAL SOUL</span><span>SUN & MOON SPECIAL</span></div>
     </div>
     <div className="player-details">
@@ -43,7 +43,7 @@ export default function RecordPlayer() {
       <div className="scrubber">
         <label className="sr-only" htmlFor="audio-progress">Vị trí phát nhạc</label>
         <input id="audio-progress" type="range" min="0" max={duration || 1} value={elapsed} disabled={!track.audioSrc || !duration}
-          onChange={(event) => { audio.current.currentTime = Number(event.target.value); setElapsed(Number(event.target.value)) }} />
+               onChange={(event) => { audio.current.currentTime = Number(event.target.value); setElapsed(Number(event.target.value)) }} />
         <div><span>{track.audioSrc ? formatTime(elapsed) : '--:--'}</span><span>✦ STEREO MOOD</span><span>{track.audioSrc ? formatTime(duration) : '--:--'}</span></div>
       </div>
       <div className="player-controls">
@@ -58,6 +58,6 @@ export default function RecordPlayer() {
       <div className="tracklist">{tracks.map((item, index) => <button key={item.title} aria-pressed={index === selected} className={index === selected ? 'selected' : ''} onClick={() => selectTrack(index)}><span>♫ {String(index + 1).padStart(2, '0')}. {item.title}</span><span>ACOUSTIC</span></button>)}</div>
     </div>
     <audio ref={audio} src={track.audioSrc || undefined} muted={muted} preload="none" onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onEnded={() => setPlaying(false)}
-      onTimeUpdate={() => setElapsed(audio.current.currentTime)} onLoadedMetadata={() => setDuration(audio.current.duration)} onError={() => { setPlaying(false); setError('Bản thu chưa tải được. Vui lòng thử lại sau.') }} />
+           onTimeUpdate={() => setElapsed(audio.current.currentTime)} onLoadedMetadata={() => setDuration(audio.current.duration)} onError={() => { setPlaying(false); setError('Bản thu chưa tải được. Vui lòng thử lại sau.') }} />
   </section>
 }

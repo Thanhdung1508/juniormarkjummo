@@ -865,13 +865,18 @@ progress {
 }
 .mascot-stage img {
   height: 350px;
+  width: 100%;
   object-fit: contain;
 }
-.mood-accessory {
-  position: absolute;
-  right: 0;
-  top: 10%;
-  font-size: 42px;
+.mood-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.mood-option img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
 }
 .mood-console .chips {
   flex-direction: column;
@@ -972,16 +977,46 @@ progress {
   display: none;
 }
 .site-header .brand small {
-  font-size: 6px;
+  font-size: 8px;
+}
+.site-header {
+  max-width: 1400px;
+  min-height: 88px;
+  padding: 14px 24px;
+  gap: 20px;
+}
+.site-header .brand-logo {
+  width: 52px;
+  height: 52px;
+}
+.site-header .brand-logo img {
+  width: 46px;
+  height: 46px;
+}
+.site-header .brand strong {
+  font-size: 18px;
+}
+.site-header .main-nav {
+  margin: 0;
+  justify-content: center;
 }
 .site-header .main-nav a {
-  padding: 9px 8px;
-  font-size: 10px;
+  padding: 11px 9px;
+  font-size: 12px;
+}
+@media (min-width: 1280px) {
+  .site-header {
+    display: grid;
+    grid-template-columns: minmax(210px, 1fr) auto minmax(210px, 1fr);
+  }
+  .site-header .account-button {
+    justify-self: end;
+  }
 }
 .footer-links {
   flex-wrap: wrap;
 }
-@media (max-width: 1100px) {
+@media (max-width: 1279px) {
   .main-nav {
     display: none;
   }
@@ -1008,6 +1043,8 @@ progress {
   .account-button {
     margin-left: auto;
   }
+}
+@media (max-width: 1100px) {
   .media-grid,
   .notes-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1180,7 +1217,23 @@ progress {
     right: 12px;
   }
   .site-header .brand small {
-    font-size: 5px;
+    font-size: 6px;
+  }
+  .site-header {
+    min-height: 72px;
+    padding: 10px 12px;
+    gap: 8px;
+  }
+  .site-header .brand strong {
+    font-size: 16px;
+  }
+  .site-header .brand-logo {
+    width: 44px;
+    height: 44px;
+  }
+  .site-header .brand-logo img {
+    width: 38px;
+    height: 38px;
   }
   .stage-person-name {
     font-size: 9px;
@@ -1237,4 +1290,96 @@ progress {
 }
 .footer-bottom {
   flex-wrap: wrap;
+}
+/* ===== Nền vũ trụ hiện đại ===== */
+.record-console.panel {
+  position: relative;
+  background:
+          radial-gradient(circle at 20% 20%, rgba(140, 90, 255, 0.25), transparent 55%),
+          radial-gradient(circle at 80% 0%, rgba(255, 90, 180, 0.18), transparent 50%),
+          radial-gradient(ellipse at bottom, #0a0a1a, #050510 70%);
+  border-radius: 24px;
+  overflow: hidden;
+}
+.record-console.panel::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+          radial-gradient(1px 1px at 10% 20%, #fff, transparent),
+          radial-gradient(1px 1px at 80% 60%, #fff, transparent),
+          radial-gradient(1px 1px at 50% 80%, #fff, transparent),
+          radial-gradient(1px 1px at 30% 50%, rgba(255,255,255,.6), transparent);
+  background-size: 200px 200px;
+  opacity: 0.5;
+  animation: twinkle 6s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+@keyframes twinkle {
+  from { opacity: 0.25; }
+  to   { opacity: 0.6; }
+}
+
+/* ===== Bàn xoay & đĩa than ===== */
+.turntable { position: relative; }
+
+.vinyl {
+  border-radius: 50%;
+  background:
+          repeating-radial-gradient(circle, #111 0px, #111 2px, #1c1c1c 3px, #111 4px),
+          radial-gradient(circle at 35% 35%, #2a2a2a, #050505 70%);
+  box-shadow:
+          0 0 0 2px rgba(255,255,255,0.05),
+          0 0 40px 6px rgba(150, 100, 255, 0.35),
+          inset 0 0 20px rgba(0,0,0,0.8);
+  transition: box-shadow 0.4s ease;
+}
+.vinyl.playing {
+  animation: spin-vinyl 2.4s linear infinite;
+  box-shadow:
+          0 0 0 2px rgba(255,255,255,0.08),
+          0 0 55px 10px rgba(180, 120, 255, 0.6),
+          inset 0 0 20px rgba(0,0,0,0.8);
+}
+@keyframes spin-vinyl {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.vinyl-label {
+  background: radial-gradient(circle, #6a3fd6, #2a145e 75%);
+  box-shadow: 0 0 14px rgba(180, 130, 255, 0.7);
+}
+
+/* ===== Kim phát (tonearm) ===== */
+.tonearm {
+  transform-origin: top right; /* chỉnh theo vị trí trục thật của tonearm trong thiết kế */
+  transform: rotate(-24deg);   /* vị trí nghỉ, nằm ngoài đĩa */
+  transition: transform 0.9s cubic-bezier(0.34, 1.2, 0.4, 1);
+  filter: drop-shadow(0 0 6px rgba(150, 110, 255, 0.4));
+}
+.tonearm.playing {
+  transform: rotate(4deg);     /* kim hạ vào trong đĩa nhạc */
+}
+.tonearm i {
+  transition: box-shadow 0.4s ease;
+}
+.tonearm.playing i {
+  box-shadow: 0 0 10px 3px rgba(255, 200, 255, 0.8);
+}
+
+/* ===== Nút play kiểu neon ===== */
+.round-button.play-button {
+  background: linear-gradient(135deg, #7c3aed, #d946ef);
+  box-shadow: 0 0 18px rgba(200, 100, 255, 0.5);
+  border: none;
+  color: #fff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.round-button.play-button:hover:not(:disabled) {
+  transform: scale(1.06);
+  box-shadow: 0 0 26px rgba(220, 130, 255, 0.75);
+}
+.round-button.play-button:disabled {
+  opacity: 0.4;
+  box-shadow: none;
 }

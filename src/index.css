@@ -76,5 +76,7 @@ button, a, input { transition: background-color .2s, border-color .2s, color .2s
 .skip-link:focus { top: 12px; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *, *::before, *::after { animation: none !important; transition: none !important; }
+  /* Keep Jummo rain and the Community sky's moving layers animated. */
+  *:not(.jummo-rain img):not(.star-sky-background > div), *::before, *::after { animation: none !important; }
+  *, *::before, *::after { transition: none !important; }
 }
