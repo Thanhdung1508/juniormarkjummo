@@ -3,6 +3,7 @@ import { useAuth } from '../features/auth/authContext'
 import useMessages from '../features/community/useMessages'
 import { playNote } from '../lib/archive'
 import { Chips, Empty, PageIntro, Quiz, SectionTitle } from './shared'
+import StarSkyBackground from './StarSkyBackground'
 
 const spectra = [
   ['all', 'Tất cả vì sao'],
@@ -101,6 +102,7 @@ export default function Community({ kind = 'star', openAuth, showInfo }) {
       {isSky ? (
         <section className="sky-window" aria-label="Bầu trời tương tác">
           <div className="star-field" style={{ width: `${100 * zoom}%`, minHeight: 450 * zoom }}>
+            <StarSkyBackground />
             {visible.map((m, i) => (
               <button
                 className={`sky-star ${m.spectrum}`}
@@ -145,7 +147,7 @@ export default function Community({ kind = 'star', openAuth, showInfo }) {
         </div>
       )}
       <div className="two-columns">
-        <form className="archive-panel community-form" onSubmit={submit} noValidate>
+        <form className={`archive-panel community-form spectrum-${form.spectrum}`} onSubmit={submit} noValidate>
           <SectionTitle eyebrow={isSky ? 'THẮP SÁNG NGUYỆN ƯỚC' : 'BẢN PHÍM GIAO HƯỞNG'}>
             {isSky ? 'Phóng Ngôi Sao Lên Bầu Trời' : 'Gõ Nốt Nhạc Của Bạn'}
           </SectionTitle>

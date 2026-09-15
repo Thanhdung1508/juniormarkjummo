@@ -212,12 +212,26 @@ select {
   margin-top: 8px;
 }
 .character-stage {
+  --stage-color: #dca42f;
+  --stage-glow: #dca42f40;
+  --stage-halo: #d598163d;
+  --stage-easing: cubic-bezier(0.22, 1, 0.36, 1);
   height: 510px;
   position: relative;
   isolation: isolate;
   max-width: 1000px;
   margin: auto;
-  background: radial-gradient(ellipse 28% 45% at 50% 65%, #d598163d, transparent);
+  background: radial-gradient(ellipse 28% 45% at 50% 65%, var(--stage-halo), transparent);
+}
+.character-stage.active-mark {
+  --stage-color: #648FFF;
+  --stage-glow: #648fff40;
+  --stage-halo: #648fff3d;
+}
+.character-stage.active-jummo {
+  --stage-color: #D55E00;
+  --stage-glow: #d55e0040;
+  --stage-halo: #d55e003d;
 }
 .ghost-type {
   position: absolute;
@@ -226,7 +240,7 @@ select {
   right: 0;
   text-align: center;
   font: clamp(50px, 12vw, 154px) Georgia;
-  color: var(--text);
+  color: var(--stage-color);
   opacity: 0.035;
   white-space: nowrap;
   z-index: -1;
@@ -238,12 +252,16 @@ select {
   padding: 0;
   bottom: 28px;
   transition:
-    left 0.45s,
-    transform 0.45s,
-    opacity 0.45s;
+    left 500ms var(--stage-easing),
+    transform 500ms var(--stage-easing),
+    opacity 500ms var(--stage-easing),
+    width 500ms var(--stage-easing),
+    height 500ms var(--stage-easing);
   width: 290px;
   height: 400px;
   transform: translateX(-50%);
+  transform-origin: bottom;
+  opacity: 1;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -258,7 +276,14 @@ select {
 .stage-person.center {
   left: 50%;
   z-index: 3;
-  filter: drop-shadow(0 0 25px #dca42f40);
+  filter: drop-shadow(0 0 25px var(--stage-glow));
+}
+.stage-person.center .stage-person-name,
+.stage-person.center .active-pill {
+  color: var(--stage-color);
+}
+.stage-person.center .active-pill {
+  border-color: var(--stage-color);
 }
 .stage-person.left {
   left: 25%;
@@ -724,45 +749,40 @@ select {
   margin-top: 40px;
 }
 /* Cộng đồng, Jummo và cẩm nang. */
+/* Three speeds and repeated shadow tiles form the decorative starfield. */
+/* Nền bầu trời & Gradient */
 .sky-window {
   margin: 24px 0;
-  background: radial-gradient(ellipse at bottom, var(--glow), transparent), var(--deep);
+  background: linear-gradient(225deg, #000040 0%, #001154 25%, #002671 50%, #172085 75%, #005dc3 100%);
   border: 1px solid var(--border);
   border-radius: 16px;
   overflow: auto;
 }
-.star-field {
-  position: relative;
-  background-image: radial-gradient(var(--gold-border) 1px, transparent 1px);
-  background-size: 43px 43px;
-}
+
+.star-field { position: relative; isolation: isolate; }
+
+/* Các thành phần nhãn sao UI */
 .sky-star {
   position: absolute;
+  z-index: 1;
   transform: translate(-50%, -50%);
   background: none;
   border: 0;
-  color: var(--heading);
+  color: var(--spectrum-color, var(--heading));
   max-width: 130px;
 }
-.sky-star b {
-  display: block;
-  font-size: 28px;
-  text-shadow: 0 0 22px currentColor;
-}
-.sky-star span {
-  display: block;
-  font-size: 10px;
-  overflow-wrap: anywhere;
-  margin-top: 8px;
-}
-.sky-star.mark {
-  color: var(--pink);
-}
-.sky-star.junior {
-  color: var(--blue);
-}
-.sky-star.jummo {
-  color: var(--accent);
+.sky-star b { display: block; font-size: 28px; text-shadow: 0 0 22px currentColor; }
+.sky-star span { display: block; font-size: 10px; overflow-wrap: anywhere; margin-top: 8px; }
+
+/* Phân loại màu sắc */
+.sky-star.mark, .community-form.spectrum-mark { --spectrum-color: var(--pink); }
+.sky-star.junior, .community-form.spectrum-junior { --spectrum-color: var(--blue); }
+.sky-star.jummo, .community-form.spectrum-jummo { --spectrum-color: var(--accent); }
+
+.community-form .chips button[aria-pressed='true'] {
+  background: var(--spectrum-color);
+  border-color: var(--spectrum-color);
+  color: var(--deep);
 }
 .notes-grid {
   display: grid;
@@ -845,13 +865,18 @@ progress {
 }
 .mascot-stage img {
   height: 350px;
+  width: 100%;
   object-fit: contain;
 }
-.mood-accessory {
-  position: absolute;
-  right: 0;
-  top: 10%;
-  font-size: 42px;
+.mood-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.mood-option img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
 }
 .mood-console .chips {
   flex-direction: column;
@@ -882,15 +907,18 @@ progress {
   z-index: 50;
   overflow: hidden;
 }
-.jummo-rain span {
+.jummo-rain img {
   position: absolute;
-  top: -50px;
-  font-size: 25px;
+  top: -180px;
+  width: var(--drop-size, 135px);
+  height: var(--drop-size, 135px);
+  margin-left: calc(var(--drop-size, 135px) / -2);
+  object-fit: contain;
   animation: jummo-fall 4s linear infinite;
 }
 @keyframes jummo-fall {
   to {
-    transform: translateY(110vh) rotate(180deg);
+    transform: translate(var(--drop-drift, 0px), calc(100vh + 360px)) rotate(180deg);
   }
 }
 .project-card > img {
@@ -949,16 +977,46 @@ progress {
   display: none;
 }
 .site-header .brand small {
-  font-size: 6px;
+  font-size: 8px;
+}
+.site-header {
+  max-width: 1400px;
+  min-height: 88px;
+  padding: 14px 24px;
+  gap: 20px;
+}
+.site-header .brand-logo {
+  width: 52px;
+  height: 52px;
+}
+.site-header .brand-logo img {
+  width: 46px;
+  height: 46px;
+}
+.site-header .brand strong {
+  font-size: 18px;
+}
+.site-header .main-nav {
+  margin: 0;
+  justify-content: center;
 }
 .site-header .main-nav a {
-  padding: 9px 8px;
-  font-size: 10px;
+  padding: 11px 9px;
+  font-size: 12px;
+}
+@media (min-width: 1280px) {
+  .site-header {
+    display: grid;
+    grid-template-columns: minmax(210px, 1fr) auto minmax(210px, 1fr);
+  }
+  .site-header .account-button {
+    justify-self: end;
+  }
 }
 .footer-links {
   flex-wrap: wrap;
 }
-@media (max-width: 1100px) {
+@media (max-width: 1279px) {
   .main-nav {
     display: none;
   }
@@ -985,6 +1043,8 @@ progress {
   .account-button {
     margin-left: auto;
   }
+}
+@media (max-width: 1100px) {
   .media-grid,
   .notes-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1157,16 +1217,29 @@ progress {
     right: 12px;
   }
   .site-header .brand small {
-    font-size: 5px;
+    font-size: 6px;
+  }
+  .site-header {
+    min-height: 72px;
+    padding: 10px 12px;
+    gap: 8px;
+  }
+  .site-header .brand strong {
+    font-size: 16px;
+  }
+  .site-header .brand-logo {
+    width: 44px;
+    height: 44px;
+  }
+  .site-header .brand-logo img {
+    width: 38px;
+    height: 38px;
   }
   .stage-person-name {
     font-size: 9px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .jummo-rain {
-    display: none;
-  }
   .stage-person {
     transition: none;
   }
@@ -1217,4 +1290,96 @@ progress {
 }
 .footer-bottom {
   flex-wrap: wrap;
+}
+/* ===== Nền vũ trụ hiện đại ===== */
+.record-console.panel {
+  position: relative;
+  background:
+          radial-gradient(circle at 20% 20%, rgba(140, 90, 255, 0.25), transparent 55%),
+          radial-gradient(circle at 80% 0%, rgba(255, 90, 180, 0.18), transparent 50%),
+          radial-gradient(ellipse at bottom, #0a0a1a, #050510 70%);
+  border-radius: 24px;
+  overflow: hidden;
+}
+.record-console.panel::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+          radial-gradient(1px 1px at 10% 20%, #fff, transparent),
+          radial-gradient(1px 1px at 80% 60%, #fff, transparent),
+          radial-gradient(1px 1px at 50% 80%, #fff, transparent),
+          radial-gradient(1px 1px at 30% 50%, rgba(255,255,255,.6), transparent);
+  background-size: 200px 200px;
+  opacity: 0.5;
+  animation: twinkle 6s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+@keyframes twinkle {
+  from { opacity: 0.25; }
+  to   { opacity: 0.6; }
+}
+
+/* ===== Bàn xoay & đĩa than ===== */
+.turntable { position: relative; }
+
+.vinyl {
+  border-radius: 50%;
+  background:
+          repeating-radial-gradient(circle, #111 0px, #111 2px, #1c1c1c 3px, #111 4px),
+          radial-gradient(circle at 35% 35%, #2a2a2a, #050505 70%);
+  box-shadow:
+          0 0 0 2px rgba(255,255,255,0.05),
+          0 0 40px 6px rgba(150, 100, 255, 0.35),
+          inset 0 0 20px rgba(0,0,0,0.8);
+  transition: box-shadow 0.4s ease;
+}
+.vinyl.playing {
+  animation: spin-vinyl 2.4s linear infinite;
+  box-shadow:
+          0 0 0 2px rgba(255,255,255,0.08),
+          0 0 55px 10px rgba(180, 120, 255, 0.6),
+          inset 0 0 20px rgba(0,0,0,0.8);
+}
+@keyframes spin-vinyl {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.vinyl-label {
+  background: radial-gradient(circle, #6a3fd6, #2a145e 75%);
+  box-shadow: 0 0 14px rgba(180, 130, 255, 0.7);
+}
+
+/* ===== Kim phát (tonearm) ===== */
+.tonearm {
+  transform-origin: top right; /* chỉnh theo vị trí trục thật của tonearm trong thiết kế */
+  transform: rotate(-24deg);   /* vị trí nghỉ, nằm ngoài đĩa */
+  transition: transform 0.9s cubic-bezier(0.34, 1.2, 0.4, 1);
+  filter: drop-shadow(0 0 6px rgba(150, 110, 255, 0.4));
+}
+.tonearm.playing {
+  transform: rotate(4deg);     /* kim hạ vào trong đĩa nhạc */
+}
+.tonearm i {
+  transition: box-shadow 0.4s ease;
+}
+.tonearm.playing i {
+  box-shadow: 0 0 10px 3px rgba(255, 200, 255, 0.8);
+}
+
+/* ===== Nút play kiểu neon ===== */
+.round-button.play-button {
+  background: linear-gradient(135deg, #7c3aed, #d946ef);
+  box-shadow: 0 0 18px rgba(200, 100, 255, 0.5);
+  border: none;
+  color: #fff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.round-button.play-button:hover:not(:disabled) {
+  transform: scale(1.06);
+  box-shadow: 0 0 26px rgba(220, 130, 255, 0.75);
+}
+.round-button.play-button:disabled {
+  opacity: 0.4;
+  box-shadow: none;
 }
