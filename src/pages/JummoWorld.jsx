@@ -6,7 +6,28 @@ export default function JummoWorld({ showInfo, openPhoto }) {
   // Năm lần chạm mở thư do fansite biên tập; không gán lời nhắn này cho nghệ sĩ.
   const [mood, setMood] = useState('music'),
     [rain, setRain] = useState(false),
+    [rainDrops, setRainDrops] = useState([]),
     [taps, setTaps] = useState(0)
+  function toggleRain() {
+    if (!rain) {
+      // Generate once per shower so other page interactions don't move the drops.
+      const count = 20
+      setRainDrops(
+        Array.from({ length: count }, (_, i) => {
+          const duration = 6 + Math.random() * 4
+          return {
+            left: `${((i + Math.random()) / count) * 100}%`,
+            animationDelay: `${-Math.random() * duration}s`,
+            animationDuration: `${duration}s`,
+            '--drop-size': `${120 + Math.random() * 30}px`,
+            opacity: 0.65 + Math.random() * 0.3,
+            '--drop-drift': `${Math.random() * 70 - 35}px`,
+          }
+        }),
+      )
+    }
+    setRain((v) => !v)
+  }
   const moods = {
     music: ['Jummo Headphone', 'Đắm chìm trong tiếng guitar và một giai điệu ấm áp.', '🎧'],
     book: ['Jummo Storybook', 'Một góc yên tĩnh để đọc sách và lưu lại câu chuyện.', '📖'],
@@ -25,16 +46,21 @@ export default function JummoWorld({ showInfo, openPhoto }) {
         }
         description="Khám phá phòng sinh hoạt của Jummo, người bạn nhỏ trong dải ngân hà JuniorMark."
       >
-        <button className="primary-button" onClick={() => setRain((v) => !v)} aria-pressed={rain}>
+        <button className="primary-button" onClick={toggleRain} aria-pressed={rain}>
           {rain ? 'Dừng Mưa Jummo' : 'Kích hoạt Mưa Jummo'}
         </button>
       </PageIntro>
       {rain && (
         <div className="jummo-rain" aria-hidden="true">
-          {Array.from({ length: 12 }, (_, i) => (
-            <span key={i} style={{ left: `${i * 8}%`, animationDelay: `${i * 0.2}s` }}>
-              🌻
-            </span>
+          {rainDrops.map((style, i) => (
+            <img
+              key={i}
+              src="/images/jummo_rain.png"
+              alt=""
+              width="135"
+              height="135"
+              style={style}
+            />
           ))}
         </div>
       )}

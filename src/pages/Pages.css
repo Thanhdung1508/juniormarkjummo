@@ -212,12 +212,26 @@ select {
   margin-top: 8px;
 }
 .character-stage {
+  --stage-color: #dca42f;
+  --stage-glow: #dca42f40;
+  --stage-halo: #d598163d;
+  --stage-easing: cubic-bezier(0.22, 1, 0.36, 1);
   height: 510px;
   position: relative;
   isolation: isolate;
   max-width: 1000px;
   margin: auto;
-  background: radial-gradient(ellipse 28% 45% at 50% 65%, #d598163d, transparent);
+  background: radial-gradient(ellipse 28% 45% at 50% 65%, var(--stage-halo), transparent);
+}
+.character-stage.active-mark {
+  --stage-color: #648FFF;
+  --stage-glow: #648fff40;
+  --stage-halo: #648fff3d;
+}
+.character-stage.active-jummo {
+  --stage-color: #D55E00;
+  --stage-glow: #d55e0040;
+  --stage-halo: #d55e003d;
 }
 .ghost-type {
   position: absolute;
@@ -226,7 +240,7 @@ select {
   right: 0;
   text-align: center;
   font: clamp(50px, 12vw, 154px) Georgia;
-  color: var(--text);
+  color: var(--stage-color);
   opacity: 0.035;
   white-space: nowrap;
   z-index: -1;
@@ -238,12 +252,16 @@ select {
   padding: 0;
   bottom: 28px;
   transition:
-    left 0.45s,
-    transform 0.45s,
-    opacity 0.45s;
+    left 500ms var(--stage-easing),
+    transform 500ms var(--stage-easing),
+    opacity 500ms var(--stage-easing),
+    width 500ms var(--stage-easing),
+    height 500ms var(--stage-easing);
   width: 290px;
   height: 400px;
   transform: translateX(-50%);
+  transform-origin: bottom;
+  opacity: 1;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -258,7 +276,14 @@ select {
 .stage-person.center {
   left: 50%;
   z-index: 3;
-  filter: drop-shadow(0 0 25px #dca42f40);
+  filter: drop-shadow(0 0 25px var(--stage-glow));
+}
+.stage-person.center .stage-person-name,
+.stage-person.center .active-pill {
+  color: var(--stage-color);
+}
+.stage-person.center .active-pill {
+  border-color: var(--stage-color);
 }
 .stage-person.left {
   left: 25%;
@@ -724,45 +749,40 @@ select {
   margin-top: 40px;
 }
 /* Cộng đồng, Jummo và cẩm nang. */
+/* Three speeds and repeated shadow tiles form the decorative starfield. */
+/* Nền bầu trời & Gradient */
 .sky-window {
   margin: 24px 0;
-  background: radial-gradient(ellipse at bottom, var(--glow), transparent), var(--deep);
+  background: linear-gradient(225deg, #000040 0%, #001154 25%, #002671 50%, #172085 75%, #005dc3 100%);
   border: 1px solid var(--border);
   border-radius: 16px;
   overflow: auto;
 }
-.star-field {
-  position: relative;
-  background-image: radial-gradient(var(--gold-border) 1px, transparent 1px);
-  background-size: 43px 43px;
-}
+
+.star-field { position: relative; isolation: isolate; }
+
+/* Các thành phần nhãn sao UI */
 .sky-star {
   position: absolute;
+  z-index: 1;
   transform: translate(-50%, -50%);
   background: none;
   border: 0;
-  color: var(--heading);
+  color: var(--spectrum-color, var(--heading));
   max-width: 130px;
 }
-.sky-star b {
-  display: block;
-  font-size: 28px;
-  text-shadow: 0 0 22px currentColor;
-}
-.sky-star span {
-  display: block;
-  font-size: 10px;
-  overflow-wrap: anywhere;
-  margin-top: 8px;
-}
-.sky-star.mark {
-  color: var(--pink);
-}
-.sky-star.junior {
-  color: var(--blue);
-}
-.sky-star.jummo {
-  color: var(--accent);
+.sky-star b { display: block; font-size: 28px; text-shadow: 0 0 22px currentColor; }
+.sky-star span { display: block; font-size: 10px; overflow-wrap: anywhere; margin-top: 8px; }
+
+/* Phân loại màu sắc */
+.sky-star.mark, .community-form.spectrum-mark { --spectrum-color: var(--pink); }
+.sky-star.junior, .community-form.spectrum-junior { --spectrum-color: var(--blue); }
+.sky-star.jummo, .community-form.spectrum-jummo { --spectrum-color: var(--accent); }
+
+.community-form .chips button[aria-pressed='true'] {
+  background: var(--spectrum-color);
+  border-color: var(--spectrum-color);
+  color: var(--deep);
 }
 .notes-grid {
   display: grid;
@@ -882,15 +902,18 @@ progress {
   z-index: 50;
   overflow: hidden;
 }
-.jummo-rain span {
+.jummo-rain img {
   position: absolute;
-  top: -50px;
-  font-size: 25px;
+  top: -180px;
+  width: var(--drop-size, 135px);
+  height: var(--drop-size, 135px);
+  margin-left: calc(var(--drop-size, 135px) / -2);
+  object-fit: contain;
   animation: jummo-fall 4s linear infinite;
 }
 @keyframes jummo-fall {
   to {
-    transform: translateY(110vh) rotate(180deg);
+    transform: translate(var(--drop-drift, 0px), calc(100vh + 360px)) rotate(180deg);
   }
 }
 .project-card > img {
@@ -1164,9 +1187,6 @@ progress {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .jummo-rain {
-    display: none;
-  }
   .stage-person {
     transition: none;
   }
