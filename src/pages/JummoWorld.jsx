@@ -8,26 +8,30 @@ export default function JummoWorld({ showInfo, openPhoto }) {
     [rain, setRain] = useState(false),
     [rainDrops, setRainDrops] = useState([]),
     [taps, setTaps] = useState(0)
-  function toggleRain() {
-    if (!rain) {
-      // Generate once per shower so other page interactions don't move the drops.
-      const count = 20
-      setRainDrops(
-        Array.from({ length: count }, (_, i) => {
-          const duration = 6 + Math.random() * 4
-          return {
-            left: `${((i + Math.random()) / count) * 100}%`,
-            animationDelay: `${-Math.random() * duration}s`,
-            animationDuration: `${duration}s`,
-            '--drop-size': `${120 + Math.random() * 30}px`,
-            opacity: 0.65 + Math.random() * 0.3,
-            '--drop-drift': `${Math.random() * 70 - 35}px`,
-          }
-        }),
-      )
+
+    function toggleRain() {
+        if (!rain) {
+            setRainDrops(
+                Array.from({ length: 18 }, () => {
+                    const fg = Math.random() > 0.7
+                    const dur = fg ? 4 + Math.random() * 2 : 6 + Math.random() * 4
+                    const top = -15 + Math.random() * 95
+
+                    return {
+                        '--drop-left': `${Math.random() * 92 + 2}vw`,
+                        '--start-top': `${top}vh`,
+                        '--drop-size': `${fg ? 200 + Math.random() * 40 : 90 + Math.random() * 30}px`,
+                        '--drop-drift': `${Math.random() * 100 - 30}px`,
+                        '--drop-rotation': `${Math.random() * 70 - 20}deg`,
+                        animationDelay: `${Math.random() * 1}s`,
+                        animationDuration: `${dur}s`,
+                        opacity: fg ? 0.9 + Math.random() * 0.1 : 0.2 + Math.random() * 0.4,
+                    }
+                })
+            )
+        }
+        setRain((v) => !v)
     }
-    setRain((v) => !v)
-  }
   const moods = {
     music: ['Jummo Headphone', 'Đắm chìm trong tiếng guitar và một giai điệu ấm áp.', '/jummo_dance.gif'],
     book: ['Jummo Storybook', 'Một góc yên tĩnh để đọc sách và lưu lại câu chuyện.', '/reading.gif'],

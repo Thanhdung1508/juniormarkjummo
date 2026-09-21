@@ -22,9 +22,12 @@
 
 .star-sky-background > div {
   will-change: transform, opacity;
-  animation:
-          animStar var(--star-duration) linear infinite,
-          twinkle var(--twinkle-duration, 3s) ease-in-out var(--twinkle-delay, 0s) infinite alternate;
+  animation-name: animStar, twinkle;
+  animation-duration: var(--star-duration), var(--twinkle-duration, 3s);
+  animation-timing-function: linear, ease-in-out;
+  animation-delay: 0s, var(--twinkle-delay, 0s);
+  animation-iteration-count: infinite, infinite;
+  animation-direction: normal, alternate;
 }
 
 .star-sky-background > div::after {
@@ -68,3 +71,19 @@
   100% { opacity: 1; }
 }
 
+/* The global reduced-motion rule protects the rest of the interface. These
+   decorative archive layers remain gently alive, with slower movement. */
+@media (prefers-reduced-motion: reduce) {
+  .star-sky-background { opacity: 0.35; }
+  .star-sky-background > div {
+    animation-name: animStar, twinkle !important;
+    animation-duration: 36s, 4s !important;
+    animation-timing-function: linear, ease-in-out !important;
+    animation-delay: 0s, 0s !important;
+    animation-iteration-count: infinite, infinite !important;
+    animation-direction: normal, alternate !important;
+    animation-play-state: running !important;
+  }
+  .star-sky-background .stars2 { animation-duration: 60s, 7s !important; }
+  .star-sky-background .stars3 { animation-duration: 90s, 9s !important; }
+}
