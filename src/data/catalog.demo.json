@@ -1,0 +1,867 @@
+{
+  "artists": [
+    {
+      "sort_order": 0,
+      "status": "published",
+      "id": "jummo",
+      "name": "Jummo Mascot",
+      "kind": "mascot",
+      "birthday": null,
+      "stage_image": "/images/jummo-mascot.png",
+      "portrait_image": "/images/jummo-mascot.png",
+      "label": "CELESTIAL GUARDIAN",
+      "color_label": "Sun Gold & Cosmic Blue",
+      "role_label": "Sun & Moon Companion",
+      "bio": "Linh vật hướng dương kết nối hai sắc màu của JuniorMark.",
+      "stage_description": "Người bạn nhỏ kết nối Ánh Dương & Ánh Nguyệt. Ghé gác xép của Jummo để khám phá lời nhắn và những món quà.",
+      "skills": []
+    },
+    {
+      "sort_order": 1,
+      "status": "published",
+      "id": "junior",
+      "name": "Junior Panachai",
+      "kind": "artist",
+      "birthday": "1996-10-23",
+      "stage_image": "/images/junior-stage.png",
+      "portrait_image": "/images/fan-photos/HNr2eA_aUAAAesn.jpg",
+      "label": "SOLAR EMBER",
+      "color_label": "Sun Flare Gold",
+      "role_label": "Ánh Dương • Sun",
+      "bio": "Góc hồ sơ Junior: diễn xuất, sân khấu và những câu chuyện trong hành trình JuniorMark.",
+      "stage_description": "Khám phá hồ sơ Ánh Dương Panachai và những cột mốc trong hành trình JuniorMark.",
+      "skills": [
+        "Diễn xuất",
+        "Host / MC",
+        "Sân khấu"
+      ]
+    },
+    {
+      "sort_order": 2,
+      "status": "published",
+      "id": "mark",
+      "name": "Mark Jiruntanin",
+      "kind": "artist",
+      "birthday": "1997-06-15",
+      "stage_image": "/images/mark-stage.png",
+      "portrait_image": "/images/fan-photos/HLt1Jy5bcAAdFxD.jpg",
+      "label": "LUNAR MELODY",
+      "color_label": "Cosmic Blue",
+      "role_label": "Ánh Nguyệt • Moon",
+      "bio": "Góc hồ sơ Mark: vai diễn, giai điệu và những dấu mốc được fandom lưu giữ.",
+      "stage_description": "Khám phá hồ sơ Ánh Nguyệt Jiruntanin, góc âm nhạc và những khoảnh khắc được lưu giữ.",
+      "skills": [
+        "Diễn xuất",
+        "Âm nhạc",
+        "Acoustic"
+      ]
+    }
+  ],
+  "works": [
+    {
+      "sort_order": 0,
+      "status": "published",
+      "id": "cherry",
+      "title": "Cherry Magic",
+      "era_label": "Star Alpha",
+      "year_label": "2023–2024",
+      "kind": "series",
+      "description": "Chương mở đầu trong góc lưu trữ những vai diễn và khoảnh khắc JuniorMark.",
+      "image": "/images/fan-photos/HNoYWmeaIAAtCbj.jpg"
+    },
+    {
+      "sort_order": 1,
+      "status": "published",
+      "id": "liners",
+      "title": "Perfect 10 Liners",
+      "era_label": "Star Beta",
+      "year_label": "2024–2025",
+      "kind": "series",
+      "description": "Một chương mới với Faifa & Wine, cùng những nụ cười và dấu mốc được fandom lưu lại.",
+      "image": "/images/fan-photos/HNwgVKGbsAA2z-b.jpg"
+    },
+    {
+      "sort_order": 2,
+      "status": "published",
+      "id": "fancon",
+      "title": "Sunnymoon & ShineRise",
+      "era_label": "Star Zenith",
+      "year_label": "Fancon memories",
+      "kind": "fancon",
+      "description": "Âm nhạc, ánh đèn và bé Jummo trong bộ sưu tập kỷ niệm sân khấu.",
+      "image": "/images/fan-photos/HPWCyKybkAAHKUm.jpg"
+    },
+    {
+      "sort_order": 3,
+      "status": "published",
+      "id": "romance",
+      "title": "My Romance Scammer",
+      "era_label": "Star Horizon",
+      "year_label": "Next chapter",
+      "kind": "series",
+      "description": "Tiếp nối hành trình kể chuyện của JuniorMark. Theo dõi thông báo phát hành tại GMMTV.",
+      "image": "/images/fan-photos/HNwNJ4GbsAE5PwW.jpg"
+    }
+  ],
+  "work_roles": [
+    {
+      "work_id": "cherry",
+      "artist_id": "junior",
+      "role_name": "Jinta"
+    },
+    {
+      "work_id": "cherry",
+      "artist_id": "mark",
+      "role_name": "Min"
+    },
+    {
+      "work_id": "liners",
+      "artist_id": "junior",
+      "role_name": "Faifa"
+    },
+    {
+      "work_id": "liners",
+      "artist_id": "mark",
+      "role_name": "Wine"
+    },
+    {
+      "work_id": "romance",
+      "artist_id": "junior",
+      "role_name": "Tim"
+    },
+    {
+      "work_id": "romance",
+      "artist_id": "mark",
+      "role_name": "Pai"
+    }
+  ],
+  "media_items": [
+    {
+      "sort_order": 0,
+      "status": "published",
+      "id": "photo-01",
+      "title": "A Little Promise",
+      "alt": "Hai người móc tay và mỉm cười trên sân khấu",
+      "kind": "photo",
+      "url": "/images/fan-photos/HNwgVKGbsAA2z-b.jpg",
+      "file_name": "HNwgVKGbsAA2z-b.jpg",
+      "credit": "Bộ ảnh do người dùng cung cấp • Giữ nguyên watermark trên ảnh gốc.",
+      "source_url": null,
+      "topic": "stage",
+      "tag": "TOGETHER ON STAGE",
+      "position": "center 30%",
+      "downloadable": true
+    },
+    {
+      "sort_order": 1,
+      "status": "published",
+      "id": "photo-02",
+      "title": "By Your Side",
+      "alt": "Hai người trong trang phục trắng bên cửa sổ",
+      "kind": "photo",
+      "url": "/images/fan-photos/HNpnaOZbsAAGFbv.jpg",
+      "file_name": "HNpnaOZbsAAGFbv.jpg",
+      "credit": "CITER • Ảnh do người dùng cung cấp.",
+      "source_url": null,
+      "topic": "cozy",
+      "tag": "COZY DAYS",
+      "position": "center 30%",
+      "downloadable": true
+    },
+    {
+      "sort_order": 2,
+      "status": "published",
+      "id": "photo-03",
+      "title": "Soft Starlight",
+      "alt": "Chân dung trong áo khoác trắng viền đen",
+      "kind": "photo",
+      "url": "/images/fan-photos/HLt1Jy5bcAAdFxD.jpg",
+      "file_name": "HLt1Jy5bcAAdFxD.jpg",
+      "credit": "Bộ ảnh do người dùng cung cấp • Giữ nguyên watermark trên ảnh gốc.",
+      "source_url": null,
+      "topic": "portrait",
+      "tag": "PORTRAIT DIARY",
+      "position": "center 25%",
+      "downloadable": true
+    },
+    {
+      "sort_order": 3,
+      "status": "published",
+      "id": "photo-04",
+      "title": "Our Little Sunshine",
+      "alt": "Jummo với chiếc mũ hướng dương giữa những mảnh confetti",
+      "kind": "photo",
+      "url": "/images/fan-photos/HPWCyKybkAAHKUm.jpg",
+      "file_name": "HPWCyKybkAAHKUm.jpg",
+      "credit": "BRACIB • Ảnh do người dùng cung cấp.",
+      "source_url": null,
+      "topic": "stage",
+      "tag": "JUMMO MOMENTS",
+      "position": "28% center",
+      "downloadable": true
+    },
+    {
+      "sort_order": 4,
+      "status": "published",
+      "id": "photo-05",
+      "title": "Golden Hour",
+      "alt": "Hai người đứng trong căn phòng ánh đèn vàng ấm",
+      "kind": "photo",
+      "url": "/images/fan-photos/HNwNJ4GbsAE5PwW.jpg",
+      "file_name": "HNwNJ4GbsAE5PwW.jpg",
+      "credit": "Bộ ảnh do người dùng cung cấp • Giữ nguyên watermark trên ảnh gốc.",
+      "source_url": null,
+      "topic": "cozy",
+      "tag": "JUNIORMARK",
+      "position": "center",
+      "downloadable": true
+    },
+    {
+      "sort_order": 5,
+      "status": "published",
+      "id": "photo-06",
+      "title": "A Quiet Moment",
+      "alt": "Chân dung nhìn nghiêng với ánh sáng dịu",
+      "kind": "photo",
+      "url": "/images/fan-photos/731417546_18122842150657853_5326659436814355590_n.jpg",
+      "file_name": "731417546_18122842150657853_5326659436814355590_n.jpg",
+      "credit": "Bộ ảnh do người dùng cung cấp • Giữ nguyên watermark trên ảnh gốc.",
+      "source_url": null,
+      "topic": "portrait",
+      "tag": "SOFT LIGHT",
+      "position": "center",
+      "downloadable": true
+    },
+    {
+      "sort_order": 6,
+      "status": "published",
+      "id": "photo-07",
+      "title": "Red & Green",
+      "alt": "Chân dung áo len sọc đỏ đen bên tán lá",
+      "kind": "photo",
+      "url": "/images/fan-photos/bac532af2edaf92f15cd0d49fe41c8e1.jpg",
+      "file_name": "bac532af2edaf92f15cd0d49fe41c8e1.jpg",
+      "credit": "Bộ ảnh do người dùng cung cấp • Giữ nguyên watermark trên ảnh gốc.",
+      "source_url": null,
+      "topic": "portrait",
+      "tag": "PORTRAIT DIARY",
+      "position": "center",
+      "downloadable": true
+    },
+    {
+      "sort_order": 7,
+      "status": "published",
+      "id": "photo-08",
+      "title": "Little Everyday Things",
+      "alt": "Khoảnh khắc sinh hoạt, chuẩn bị một chiếc áo trắng",
+      "kind": "photo",
+      "url": "/images/fan-photos/HK_3D4bbsAAFcSk.jpg",
+      "file_name": "HK_3D4bbsAAFcSk.jpg",
+      "credit": "Bộ ảnh do người dùng cung cấp • Giữ nguyên watermark trên ảnh gốc.",
+      "source_url": null,
+      "topic": "cozy",
+      "tag": "DAILY MOMENTS",
+      "position": "center",
+      "downloadable": true
+    },
+    {
+      "sort_order": 8,
+      "status": "published",
+      "id": "photo-09",
+      "title": "Pages of Us",
+      "alt": "Ảnh ghép những món ăn, quà tặng và kỷ niệm đời thường",
+      "kind": "photo",
+      "url": "/images/fan-photos/HLlKtNeaUAA42uM.jpg",
+      "file_name": "HLlKtNeaUAA42uM.jpg",
+      "credit": "@junniours (watermark trên ảnh) • Ảnh do người dùng cung cấp.",
+      "source_url": null,
+      "topic": "cozy",
+      "tag": "PHOTO DIARY",
+      "position": "center",
+      "downloadable": true
+    },
+    {
+      "sort_order": 9,
+      "status": "published",
+      "id": "photo-10",
+      "title": "Midnight Portrait",
+      "alt": "Chân dung nghiêng trong trang phục đen",
+      "kind": "photo",
+      "url": "/images/fan-photos/HMUIpvfa0AE-yvv.jpg",
+      "file_name": "HMUIpvfa0AE-yvv.jpg",
+      "credit": "MarkJrtn’s Trends TH • Ảnh do người dùng cung cấp.",
+      "source_url": null,
+      "topic": "portrait",
+      "tag": "IN THE SPOTLIGHT",
+      "position": "center",
+      "downloadable": true
+    },
+    {
+      "sort_order": 10,
+      "status": "published",
+      "id": "photo-11",
+      "title": "A Tender Moment",
+      "alt": "Khoảnh khắc hôn trán dịu dàng",
+      "kind": "photo",
+      "url": "/images/fan-photos/HNoYWmeaIAAtCbj.jpg",
+      "file_name": "HNoYWmeaIAAtCbj.jpg",
+      "credit": "Bộ ảnh do người dùng cung cấp • Giữ nguyên watermark trên ảnh gốc.",
+      "source_url": null,
+      "topic": "cozy",
+      "tag": "JUNIORMARK",
+      "position": "center",
+      "downloadable": true
+    },
+    {
+      "sort_order": 11,
+      "status": "published",
+      "id": "photo-12",
+      "title": "Blue Notes",
+      "alt": "Ảnh ghép hai dáng chụp với trang phục denim",
+      "kind": "photo",
+      "url": "/images/fan-photos/HNr2eA_aUAAAesn.jpg",
+      "file_name": "HNr2eA_aUAAAesn.jpg",
+      "credit": "Bộ ảnh do người dùng cung cấp • Giữ nguyên watermark trên ảnh gốc.",
+      "source_url": null,
+      "topic": "portrait",
+      "tag": "PORTRAIT DIARY",
+      "position": "center",
+      "downloadable": true
+    },
+    {
+      "sort_order": 12,
+      "status": "published",
+      "id": "photo-13",
+      "title": "Under Stage Lights",
+      "alt": "Hai người tựa sát bên nhau dưới ánh đèn sân khấu",
+      "kind": "photo",
+      "url": "/images/fan-photos/HPSkkI9bIAEmbku.jpg",
+      "file_name": "HPSkkI9bIAEmbku.jpg",
+      "credit": "Bộ ảnh do người dùng cung cấp • Giữ nguyên watermark trên ảnh gốc.",
+      "source_url": null,
+      "topic": "stage",
+      "tag": "STAGE MEMORY",
+      "position": "center",
+      "downloadable": true
+    },
+    {
+      "sort_order": 13,
+      "status": "published",
+      "id": "photo-14",
+      "title": "Slow Morning",
+      "alt": "Khoảnh khắc ngồi bên giường nhìn về phía ánh sáng",
+      "kind": "photo",
+      "url": "/images/fan-photos/HQZjqeoaIAApm0L.jpg",
+      "file_name": "HQZjqeoaIAApm0L.jpg",
+      "credit": "Bộ ảnh do người dùng cung cấp • Giữ nguyên watermark trên ảnh gốc.",
+      "source_url": null,
+      "topic": "portrait",
+      "tag": "COZY DAYS",
+      "position": "center",
+      "downloadable": true
+    },
+    {
+      "sort_order": 14,
+      "status": "published",
+      "id": "photo-15",
+      "title": "JuMarkMo",
+      "alt": "Ảnh đôi trong trang phục tối màu từ bài đăng GMMTV",
+      "kind": "photo",
+      "url": "/images/fan-photos/gmmtv-jumarkmo.jpg",
+      "file_name": "gmmtv-jumarkmo.jpg",
+      "credit": "GMMTV",
+      "source_url": "https://x.com/GMMTV/status/2047943286078484622",
+      "topic": "cozy",
+      "tag": "GMMTV ARCHIVE",
+      "position": "center",
+      "downloadable": true
+    },
+    {
+      "sort_order": 15,
+      "status": "published",
+      "id": "photo-16",
+      "title": "ShineRise",
+      "alt": "Ảnh đôi trong suit đen trắng tại hậu trường từ GMMTV",
+      "kind": "photo",
+      "url": "/images/fan-photos/gmmtv-shinerise.jpg",
+      "file_name": "gmmtv-shinerise.jpg",
+      "credit": "GMMTV",
+      "source_url": "https://x.com/GMMTV/status/1955203882625458213",
+      "topic": "stage",
+      "tag": "GMMTV ARCHIVE",
+      "position": "center",
+      "downloadable": true
+    }
+  ],
+  "media_artists": [
+    {
+      "media_id": "photo-01",
+      "artist_id": "junior"
+    },
+    {
+      "media_id": "photo-01",
+      "artist_id": "mark"
+    },
+    {
+      "media_id": "photo-02",
+      "artist_id": "junior"
+    },
+    {
+      "media_id": "photo-02",
+      "artist_id": "mark"
+    },
+    {
+      "media_id": "photo-03",
+      "artist_id": "mark"
+    },
+    {
+      "media_id": "photo-04",
+      "artist_id": "jummo"
+    },
+    {
+      "media_id": "photo-05",
+      "artist_id": "junior"
+    },
+    {
+      "media_id": "photo-05",
+      "artist_id": "mark"
+    },
+    {
+      "media_id": "photo-06",
+      "artist_id": "mark"
+    },
+    {
+      "media_id": "photo-07",
+      "artist_id": "mark"
+    },
+    {
+      "media_id": "photo-08",
+      "artist_id": "mark"
+    },
+    {
+      "media_id": "photo-09",
+      "artist_id": "junior"
+    },
+    {
+      "media_id": "photo-10",
+      "artist_id": "mark"
+    },
+    {
+      "media_id": "photo-11",
+      "artist_id": "junior"
+    },
+    {
+      "media_id": "photo-11",
+      "artist_id": "mark"
+    },
+    {
+      "media_id": "photo-12",
+      "artist_id": "junior"
+    },
+    {
+      "media_id": "photo-13",
+      "artist_id": "junior"
+    },
+    {
+      "media_id": "photo-13",
+      "artist_id": "mark"
+    },
+    {
+      "media_id": "photo-14",
+      "artist_id": "mark"
+    },
+    {
+      "media_id": "photo-15",
+      "artist_id": "junior"
+    },
+    {
+      "media_id": "photo-15",
+      "artist_id": "mark"
+    },
+    {
+      "media_id": "photo-16",
+      "artist_id": "junior"
+    },
+    {
+      "media_id": "photo-16",
+      "artist_id": "mark"
+    }
+  ],
+  "tracks": [
+    {
+      "sort_order": 0,
+      "status": "published",
+      "id": "track-1",
+      "title": "Warm Whisper",
+      "subtitle": "Cherry Magic • Acoustic mood",
+      "audio_url": null,
+      "kind": "playlist"
+    },
+    {
+      "sort_order": 1,
+      "status": "published",
+      "id": "track-2",
+      "title": "Acoustic Starlight",
+      "subtitle": "Midnight Session",
+      "audio_url": null,
+      "kind": "playlist"
+    },
+    {
+      "sort_order": 2,
+      "status": "published",
+      "id": "track-3",
+      "title": "Our Sunnymoon",
+      "subtitle": "Acoustic Live",
+      "audio_url": null,
+      "kind": "playlist"
+    }
+  ],
+  "events": [
+    {
+      "sort_order": 0,
+      "status": "published",
+      "id": "acoustic",
+      "title": "Birthday Acoustic Night • Starlit Echoes",
+      "description": "Sự kiện minh họa từ bản thiết kế, chưa xác nhận.",
+      "starts_at": "2026-06-15T00:00:00+07:00",
+      "all_day": true,
+      "category": "fancon",
+      "is_demo": true,
+      "image": "/images/fan-photos/HLt1Jy5bcAAdFxD.jpg"
+    },
+    {
+      "sort_order": 1,
+      "status": "published",
+      "id": "press",
+      "title": "My Romance Scammer • Press Conference",
+      "description": "Sự kiện minh họa từ bản thiết kế, chưa xác nhận.",
+      "starts_at": "2026-09-15T00:00:00+07:00",
+      "all_day": true,
+      "category": "press",
+      "is_demo": true,
+      "image": "/images/fan-photos/HNwNJ4GbsAE5PwW.jpg"
+    },
+    {
+      "sort_order": 2,
+      "status": "published",
+      "id": "gathering",
+      "title": "Sunflowers for You • Birthday Gathering",
+      "description": "Sự kiện minh họa từ bản thiết kế, chưa xác nhận.",
+      "starts_at": "2026-10-23T00:00:00+07:00",
+      "all_day": true,
+      "category": "fancon",
+      "is_demo": true,
+      "image": "/images/fan-photos/HNr2eA_aUAAAesn.jpg"
+    }
+  ],
+  "projects": [
+    {
+      "sort_order": 0,
+      "status": "published",
+      "id": "junior-led",
+      "title": "LED mừng sinh nhật Junior",
+      "goal_amount": 50000000,
+      "image": "/images/fan-photos/HNr2eA_aUAAAesn.jpg",
+      "is_demo": true,
+      "description": "Dự án mẫu, chưa mở quyên góp hoặc nhận tiền."
+    },
+    {
+      "sort_order": 1,
+      "status": "published",
+      "id": "food-truck",
+      "title": "Food Truck tiếp sức đoàn phim",
+      "goal_amount": 35000000,
+      "image": "/images/fan-photos/HNwNJ4GbsAE5PwW.jpg",
+      "is_demo": true,
+      "description": "Dự án mẫu, chưa mở quyên góp hoặc nhận tiền."
+    },
+    {
+      "sort_order": 2,
+      "status": "published",
+      "id": "jummo-charity",
+      "title": "Mang nụ cười cùng bé Jummo",
+      "goal_amount": 30000000,
+      "image": "/images/fan-photos/HPWCyKybkAAHKUm.jpg",
+      "is_demo": true,
+      "description": "Dự án mẫu, chưa mở quyên góp hoặc nhận tiền."
+    }
+  ],
+  "project_entries": [
+    {
+      "sort_order": 0,
+      "status": "published",
+      "id": "00000000-0000-4000-8000-000000000001",
+      "project_id": "junior-led",
+      "amount": 42500000,
+      "note": "Bút toán minh họa, không phải giao dịch thật.",
+      "entry_date": "2026-09-14"
+    },
+    {
+      "sort_order": 1,
+      "status": "published",
+      "id": "00000000-0000-4000-8000-000000000002",
+      "project_id": "food-truck",
+      "amount": 35000000,
+      "note": "Bút toán minh họa, không phải giao dịch thật.",
+      "entry_date": "2026-09-14"
+    },
+    {
+      "sort_order": 2,
+      "status": "published",
+      "id": "00000000-0000-4000-8000-000000000003",
+      "project_id": "jummo-charity",
+      "amount": 18600000,
+      "note": "Bút toán minh họa, không phải giao dịch thật.",
+      "entry_date": "2026-09-14"
+    }
+  ],
+  "editorial_entries": [
+    {
+      "sort_order": 0,
+      "status": "published",
+      "id": "highlight-1",
+      "section": "highlight",
+      "title": "Một bầu trời mang tên Jummo",
+      "body": "Giữa những mảnh confetti, có một mặt trời nhỏ luôn ở cạnh chúng mình.",
+      "image": "/images/fan-photos/HPWCyKybkAAHKUm.jpg",
+      "subtitle": "JUMMO MOMENTS",
+      "detail": "Ảnh Jummo tại sự kiện được người dùng cung cấp. Một khoảnh khắc để lưu lại trong góc nhỏ của cộng đồng. Credit trên ảnh: BRACIB.",
+      "tag": "OUR LITTLE SUNSHINE"
+    },
+    {
+      "sort_order": 1,
+      "status": "published",
+      "id": "highlight-2",
+      "section": "highlight",
+      "title": "Một lời hứa, hai nụ cười",
+      "body": "Những cái móc tay và ánh nhìn dịu dàng làm nên ký ức của JuniorMark.",
+      "image": "/images/fan-photos/HNwgVKGbsAA2z-b.jpg",
+      "subtitle": "TOGETHER ON STAGE",
+      "detail": "Ảnh JuniorMark móc tay trên sân khấu từ bộ ảnh người dùng cung cấp. Giữ nguyên ảnh gốc và watermark khi xem ảnh lớn trong gallery.",
+      "tag": "JUNIORMARK MEMORY"
+    },
+    {
+      "sort_order": 2,
+      "status": "published",
+      "id": "highlight-3",
+      "section": "highlight",
+      "title": "Nắng ghé qua khung cửa",
+      "body": "Một buổi sáng thật chậm, một khoảng trời ấm áp, và hai người bên nhau.",
+      "image": "/images/fan-photos/HNpnaOZbsAAGFbv.jpg",
+      "subtitle": "COZY DAYS",
+      "detail": "Ảnh trong bộ trang phục trắng từ người dùng, có logo CITER trên ảnh. Bản gốc được giữ nguyên trong thư viện.",
+      "tag": "PHOTO DIARY"
+    },
+    {
+      "sort_order": 0,
+      "status": "published",
+      "id": "music",
+      "section": "mood",
+      "title": "Jummo Headphone",
+      "body": "Đắm chìm trong tiếng guitar và một giai điệu ấm áp.",
+      "image": "/jummo_dance.gif",
+      "subtitle": "Đang nghe nhạc (Lo-Fi Acoustic)"
+    },
+    {
+      "sort_order": 1,
+      "status": "published",
+      "id": "book",
+      "section": "mood",
+      "title": "Jummo Storybook",
+      "body": "Một góc yên tĩnh để đọc sách và lưu lại câu chuyện.",
+      "image": "/reading.gif",
+      "subtitle": "Đang đọc kịch bản & sách"
+    },
+    {
+      "sort_order": 2,
+      "status": "published",
+      "id": "heart",
+      "section": "mood",
+      "title": "Sunflower Heart",
+      "body": "Gửi thật nhiều yêu thương tới JuniorMark và bạn.",
+      "image": "/hugging.gif",
+      "subtitle": "Gửi ngàn tim yêu (Fandom Vibe)"
+    },
+    {
+      "sort_order": 0,
+      "status": "published",
+      "id": "attic-letter",
+      "section": "letter",
+      "title": "Gửi các vì sao thân yêu",
+      "body": "Gửi các vì sao thân yêu,\nMột ngày dù bận rộn đến đâu, mong bạn vẫn giữ cho mình một khoảng bình yên. Cảm ơn bạn đã mang âm nhạc và nụ cười đến góc nhỏ này.\n— Lời nhắn biên tập của fansite, không phải thư thật của nghệ sĩ."
+    }
+  ],
+  "glossary": [
+    {
+      "sort_order": 0,
+      "status": "published",
+      "id": "term-1",
+      "title": "Junior / Juju",
+      "body": "Tên gọi thân mật dành cho Junior trong góc lưu trữ fansite."
+    },
+    {
+      "sort_order": 1,
+      "status": "published",
+      "id": "term-2",
+      "title": "Mark / Markji",
+      "body": "Tên gọi thân mật dành cho Mark trong góc lưu trữ fansite."
+    },
+    {
+      "sort_order": 2,
+      "status": "published",
+      "id": "term-3",
+      "title": "Bé Mõ Jummo",
+      "body": "Linh vật kết nối Sun & Moon của JuniorMark."
+    },
+    {
+      "sort_order": 3,
+      "status": "published",
+      "id": "term-4",
+      "title": "Sun & Moon",
+      "body": "Hình tượng Ánh Dương và Ánh Nguyệt dùng trong thiết kế."
+    },
+    {
+      "sort_order": 4,
+      "status": "published",
+      "id": "term-5",
+      "title": "Fancon",
+      "body": "Sự kiện kết hợp giao lưu fan và biểu diễn."
+    },
+    {
+      "sort_order": 5,
+      "status": "published",
+      "id": "term-6",
+      "title": "OST",
+      "body": "Nhạc gắn với phim hoặc chương trình."
+    }
+  ],
+  "checklist_items": [
+    {
+      "sort_order": 0,
+      "status": "published",
+      "id": "check-1",
+      "label": "Đọc nguồn chính thức của chiến dịch"
+    },
+    {
+      "sort_order": 1,
+      "status": "published",
+      "id": "check-2",
+      "label": "Kiểm tra hạn và điều kiện bình chọn"
+    },
+    {
+      "sort_order": 2,
+      "status": "published",
+      "id": "check-3",
+      "label": "Giữ thông tin tài khoản riêng tư"
+    },
+    {
+      "sort_order": 3,
+      "status": "published",
+      "id": "check-4",
+      "label": "Tôn trọng bản quyền và người sáng tạo"
+    },
+    {
+      "sort_order": 4,
+      "status": "published",
+      "id": "check-5",
+      "label": "Cổ vũ bằng nội dung của chính mình"
+    }
+  ],
+  "quiz_questions": [
+    {
+      "sort_order": 0,
+      "status": "published",
+      "id": "question-1",
+      "prompt": "Một ngày mệt mỏi khép lại, bạn muốn điều gì?",
+      "solar_choice": "Một buổi jam tràn năng lượng",
+      "lunar_choice": "Một giai điệu thật dịu",
+      "jummo_choice": "Một cái ôm của Jummo"
+    },
+    {
+      "sort_order": 1,
+      "status": "published",
+      "id": "question-2",
+      "prompt": "Bạn sẽ mang gì đến tiệm đĩa?",
+      "solar_choice": "Hoa hướng dương",
+      "lunar_choice": "Một chiếc đĩa yêu thích",
+      "jummo_choice": "Một lá thư nhỏ"
+    },
+    {
+      "sort_order": 2,
+      "status": "published",
+      "id": "question-3",
+      "prompt": "Điều bạn muốn gửi tới JuniorMark?",
+      "solar_choice": "Nụ cười và sức mạnh",
+      "lunar_choice": "Bình yên và cảm hứng",
+      "jummo_choice": "Tình yêu của cả fandom"
+    }
+  ],
+  "downloads": [
+    {
+      "sort_order": 0,
+      "status": "published",
+      "id": "mascot",
+      "title": "Jummo Mascot",
+      "description": "Ảnh mascot đang dùng trong giao diện.",
+      "url": "/images/jummo-mascot.png",
+      "kind": "mascot",
+      "credit": "Ảnh từ thiết kế người dùng cung cấp"
+    },
+    {
+      "sort_order": 1,
+      "status": "published",
+      "id": "stickers",
+      "title": "Bộ Sticker & Hình Nền",
+      "description": "File gốc chưa được cung cấp.",
+      "url": null,
+      "kind": "sticker",
+      "credit": ""
+    },
+    {
+      "sort_order": 2,
+      "status": "published",
+      "id": "journal",
+      "title": "Hộ Chiếu & Nhật Ký",
+      "description": "Nhật ký chòm sao sẽ được bổ sung khi có file.",
+      "url": null,
+      "kind": "journal",
+      "credit": ""
+    }
+  ],
+  "jummo_fortunes": [
+    {
+      "id": "10000000-0000-4000-8000-000000000001",
+      "quote_text": "Đắm chìm trong tiếng guitar và một giai điệu ấm áp.",
+      "author_type": "jummo",
+      "background_url": "/jummo_dance.gif",
+      "status": "published",
+      "sort_order": 0
+    },
+    {
+      "id": "10000000-0000-4000-8000-000000000002",
+      "quote_text": "Một góc yên tĩnh để đọc sách và lưu lại câu chuyện.",
+      "author_type": "jummo",
+      "background_url": "/reading.gif",
+      "status": "published",
+      "sort_order": 1
+    },
+    {
+      "id": "10000000-0000-4000-8000-000000000003",
+      "quote_text": "Gửi thật nhiều yêu thương tới JuniorMark và bạn.",
+      "author_type": "jummo",
+      "background_url": "/hugging.gif",
+      "status": "published",
+      "sort_order": 2
+    }
+  ],
+  "jummo_secret_rewards": [
+    {
+      "id": "20000000-0000-4000-8000-000000000001",
+      "title": "Gửi các vì sao thân yêu",
+      "reward_type": "letter",
+      "body": "Gửi các vì sao thân yêu,\nMột ngày dù bận rộn đến đâu, mong bạn vẫn giữ cho mình một khoảng bình yên. Cảm ơn bạn đã mang âm nhạc và nụ cười đến góc nhỏ này.\n— Lời nhắn biên tập của fansite, không phải thư thật của nghệ sĩ.",
+      "status": "published",
+      "sort_order": 0
+    }
+  ]
+}

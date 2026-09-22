@@ -1,0 +1,260 @@
+Dự án thiết kế website fan cho JuniorMark
+Ngày cập nhập: 11/9/2026
+
+Đối tượng sử dụng : Cộng đồng fan JuniorMarkJummo
+Chủ đề giao diện (Concept): The Celestial Record Store (Tiệm Đĩa & Bầu Trời Kỷ Niệm)
+Linh vật thương hiệu: Jummo Interactive Mascot System
+Ngôn ngữ MVP: English / Vietnamese 
+
+I. Giới thiệu sơ bộ
+1. Thông tin cá nhân
+
+Hạng mục
+Junior Panachai
+Mark Jiruntanin
+Tên tiếng Thái
+ปณชัย ศรีอาริยะรุ่งเรือง
+จิรันธนิน ตรัยรัตนยนต์
+Tên phiên âm
+Panachai Sriariyarungruang
+Jiruntanin Trairattanayon
+Biệt danh / Nickname
+Junior, Juju
+Mark, Markji
+Ngày sinh & Cung hoàng đạo
+23/10/1996 (Thiên Bình / Bọ Cạp)
+15/06/1997 (Song Tử)
+Học vấn
+ĐH Chulalongkorn (Khoa Nghệ thuật Truyền thông)
+ĐH Kasetsart (Khoa Quản trị Kinh doanh)
+Sở thích & Kỹ năng
+MC, Host, giao tiếp khéo léo, diễn xuất linh hoạt
+Chơi Guitar, ca hát, tạo content, thể thao
+Kênh truyền thông cá nhân
+IG: @juniormk | X: @juniormk
+IG: @markjrn | X: @markjrn_
+
+2. Tác phẩm hợp tác & Philmography
+
+Tên tác phẩm
+Năm
+Nhân vật (Junior - Mark)
+Loại hình / Nền tảng
+Ghi chú / Vai trò
+Cherry Magic Thailand
+2023
+Jinta — Min
+Series (GMMTV / Viu)
+Couple phụ gây sốt, tạo bước ngoặt lớn cho Fandom JuniorMark.
+Perfect 10 Liners
+2024
+Faifa — Wine
+Series (GMMTV / YouTube)
+Củng cố định vị couple cố định trong các dự án lớn.
+My Romance Scammer
+2025–2026
+Tim — Pai
+Series (GMMTV)
+Dự án đóng chính đầu tiên khẳng định sức hút và tài năng.
+
+II. HỒ SƠ ĐỊNH DANH & QUY HOẠCH LINH VẬT JUMMO (JUMMO ASSISTANT) 
+1. Nguồn gốc & Thân phận
+Nguồn gốc: Jummo (Mõ / Bé Jummo) là "con cưng tinh thần" được sinh ra từ các hình vẽ, ý tưởng thiết kế độc quyền và quà tặng merchandise từ GMMTV / MY IDEAL FAN đại diện cho tình yêu của JuniorMark.
+Vai trò: Trợ lý tương tác thông minh (Smart Interactive Mascot Assistant) xuất hiện xuyên suốt trên giao diện website.
+2. Nhận diện hình ảnh & Bảng màu (Visual & Color Palette)
+Hình dáng: Cún lai mây/bông gòn mềm mại, đôi tai rủ nhẹ màu Pastel Blue, đôi mắt tròn xoe lấp lánh như ngôi sao.
+Phụ kiện nhận diện:
+Tai nghe Headphone (Soft Pink #FFADAD): Biểu tượng niềm đam mê âm nhạc và Guitar của Mark.
+Cuốn sách / Micro (Pastel Blue #A0C4FF): Đại diện cho học vấn, tài năng MC/Host và tri thức của Junior.
+Mã màu hệ thống (System Theme Palette):
+Primary Pastel Blue (#A0C4FF): Đại diện cho sự nhẹ nhàng, thanh xuân của Junior.
+Primary Soft Pink / Coral (#FFADAD): Đại diện cho sự ngọt ngào, âm nhạc của Mark.
+Accent Amber Gold (#FFB703): Ánh sáng ngôi sao, đèn phòng thu và hiệu ứng tương tác.
+Background Off-White (#FAFAFA) & Dark Navy (#0B0F19): Hai chế độ nền mặc định và Dark Mode.
+
+III. PHÂN TÍCH CHI TIẾT CÁC CHỨC NĂNG WEBSITE (UI/UX)
+1. Trang chủ (Homepage / Landing Page)
+Hero Section:
+Slider ảnh/video ngắn chất lượng cao (4K/HD) với hiệu ứng Fade/Parallax.
+Background Night-sky hoặc Sunrise Gradient với hiệu ứng Particle Star chuyển động chậm.
+Tự động chuyển sang ảnh tĩnh thay thế khi người dùng kích hoạt chế độ reduced-motion.
+Countdown Event Clock: Đồng hồ đếm ngược Real-time đến các sự kiện gần nhất (Sinh nhật Junior 23/10, Sinh nhật Mark 15/06, Fan Meeting, Lịch chiếu phim).
+Quick Feed: Tự động đồng bộ 3 tin tức mới nhất, 4 ảnh HQ mới cập nhật và 1 video nổi bật từ YouTube.
+Music/OST Player Widget: Trình phát nhạc thu nhỏ ở góc trang hỗ trợ nghe các bản nhạc OST phim do hai anh trình bày.
+2. Trang Profile & Interactive Timeline
+Personal Profile: Card tương tác cho phép đổi qua lại giữa Junior và Mark để xem chi tiết tiểu sử, phong cách, biography ngắn, birthday, official social links, career highlights, filmography và gallery cá nhân.
+Couple Journey Timeline: Sơ đồ thời gian dạng dọc (Vertical Timeline) lưu giữ các cột mốc: Ngày đầu tiên chung khung hình, Workshop Cherry Magic, Fan Meeting đầu tiên và các giải thưởng.
+3. Kho Truyền thông đa phương tiện (Media Hub / Gallery)
+Bộ lọc đa tầng (Multi-filter):
+Theo nhân vật: Junior Only, Mark Only, JuniorMark Couple.
+Theo phân loại: Press/Event, Concert/Fan Meeting, Airport, Behind-The-Scenes, Drama Stills.
+Theo năm: 2023, 2024, 2025, 2026.
+Lightbox Viewer: Xem ảnh full-size, tải ảnh HQ, hiển thị Credit tác gia (Fansite master/Photographer) và nút chia sẻ nhanh lên X/Twitter/Facebook.
+Video Vault: Tổng hợp Fan-made video (FMV), Fancam, Phim ngắn, Vietsub / Engsub Interview.
+4. Lịch trình Hoạt động (Schedule & Calendar)
+Chế độ xem: Hỗ trợ 2 chế độ View (Lịch tháng Calendar & Danh sách Timeline).
+Trạng thái sự kiện: Gán tag màu phân loại (Đỏ: Live Broadcast/TV, Xanh dương: Fan Meeting, Xanh lá: Commercial/Event, Xám: Completed).
+Chi tiết sự kiện: Thời gian, Địa điểm (tích hợp Google Maps), Link mua vé, Link xem Livestream, Hashtag đu trend X/Twitter.
+5. Tương tác Fandom & Linh vật Jummo (Community & Mascot System)
+A. Bầu Trời Nguyện Ước (Our Starry Sky)
+Gửi Star: Fan nhập display name, message (tối đa 200 ký tự) và chọn star style trong danh sách giới hạn. Sau khi gửi, ngôi sao bay vút lên bầu trời canvas.
+Light this Star: Kích hoạt nút thả tim cho ngôi sao. Độ sáng tăng theo số lượt light trong phạm vi giới hạn, kích thước không tăng vô hạn để giữ thẩm mỹ.
+Performance & Privacy: Chỉ render 200–300 star gần đây hoặc được chọn; các star cũ được aggregate thành nền chòm sao (constellation). Danh sách lời nhắn dùng pagination hoặc virtual rendering. Chỉ lưu vị trí cấp quốc gia (country-level location), không công khai IP hay vị trí chính xác.
+B. Hệ thống tương tác Jummo Assistant
+Theme & Mood Switcher: Widget Jummo góc màn hình cho phép đổi nhanh giữa giao diện Off-White và Dark Navy. Bấm vào Jummo để đổi trạng thái animation (Đeo headphone nghe OST, Cầm sách xem Timeline).
+Jummo Fortune Cookie (Quẻ may mắn): Fan bấm vào Jummo 1 lần mỗi ngày để rút thẻ câu chúc/quote truyền năng lượng ngọt ngào (giới hạn 1 lượt/ngày/user).
+Secret Easter Egg: Nhấp liên tiếp 5 lần vào Jummo để kích hoạt hiệu ứng "Mưa Jummo" và mở khóa Pop-up lá thư tay bí mật hoặc video chưa công bố.
+C. Dự án & Cẩm nang Fan (Fan Projects & Baby Fan Guide)
+Fan Projects Tracker: Hiển thị dự án quyên góp (LED Banner, Quyên góp sinh nhật, Food Truck) với thanh tiến độ % (Progress Bar) và minh bạch sao kê tài chính.
+Baby Fan Guide: Cẩm nang nhập môn gồm Từ điển Fandom (Meme, Nickname, Insider Jokes), Hướng dẫn Vote giải thưởng, cách quét trend X/Twitter, quy tắc tham gia event, giới thiệu era và OST.
+IV. ARCHITECTURE & TECH STACK CHI TIẾT
+1. Công nghệ Sử dụng (Technical Stack)
+Tầng (Layer)
+Công nghệ
+Mô tả chi tiết
+Frontend Framework
+Next.js 14+ (App Router)
+React Framework tối ưu Server-Side Rendering (SSR) & Static Site Generation (SSG) giúp SEO tốt.
+Styling & UI
+Tailwind CSS + Shadcn UI + Framer Motion
+Xây dựng giao diện hiện đại, responsive, hiệu ứng mượt mà và hỗ trợ Dark/Light Mode.
+Backend & Auth
+Supabase (PostgreSQL)
+Database PostgreSQL Realtime, Authentication (Google/Twitter Login), Storage cho Uploads.
+Image Storage / CDN
+Cloudinary / AWS S3
+Lưu trữ và tự động nén/convert ảnh sang WebP/AVIF để tải trang siêu nhanh.
+Deployment
+Vercel
+Hosting CI/CD tự động kết nối với GitHub, tốc độ truy cập quốc tế cao.
+2. Thiết kế Cơ sở Dữ liệu Chi tiết (Database Design Schema) 
+-- 1. USERS: Quản lý người dùng và phân quyền
+CREATE TABLE users (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    display_name VARCHAR(100) NOT NULL,
+    avatar_url TEXT,
+    role VARCHAR(20) DEFAULT 'FAN', -- 'ADMIN', 'MODERATOR', 'FAN'
+    created_at TIMESTAMP WITH TIMEZONE DEFAULT NOW()
+);
+
+-- 2. PROFILES: Thông tin tiểu sử cá nhân của Junior và Mark
+CREATE TABLE profiles (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    slug VARCHAR(50) UNIQUE NOT NULL, -- 'junior', 'mark'
+    full_name_th VARCHAR(255) NOT NULL,
+    full_name_en VARCHAR(255) NOT NULL,
+    nickname VARCHAR(50),
+    birth_date DATE NOT NULL,
+    bio TEXT,
+    social_links JSONB, -- {"instagram": "...", "twitter": "...", "tiktok": "..."}
+    avatar_hd TEXT,
+    updated_at TIMESTAMP WITH TIMEZONE DEFAULT NOW()
+);
+
+-- 3. MEDIA_ITEMS: Kho lưu trữ đa phương tiện
+CREATE TABLE media_items (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    title VARCHAR(255) NOT NULL,
+    category VARCHAR(50) NOT NULL, -- 'EVENT', 'DRAMA', 'BEHIND', 'AIRPORT'
+    media_type VARCHAR(20) NOT NULL, -- 'IMAGE', 'VIDEO'
+    url TEXT NOT NULL,
+    thumbnail_url TEXT,
+    credit_author VARCHAR(100),
+    tags TEXT[], -- ['JuniorMark', 'CherryMagic', 'Perfect10Liners']
+    views_count INT DEFAULT 0,
+    created_at TIMESTAMP WITH TIMEZONE DEFAULT NOW()
+);
+
+-- 4. SCHEDULES: Quản lý lịch trình sự kiện
+CREATE TABLE schedules (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    event_date TIMESTAMP WITH TIMEZONE NOT NULL,
+    location_name VARCHAR(255),
+    map_link TEXT,
+    stream_link TEXT,
+    hashtags TEXT[],
+    status VARCHAR(20) DEFAULT 'UPCOMING', -- 'UPCOMING', 'LIVE', 'FINISHED'
+    created_at TIMESTAMP WITH TIMEZONE DEFAULT NOW()
+);
+
+-- 5. FAN_STARS: Hệ thống Bầu Trời Nguyện Ước (Our Starry Sky)
+CREATE TABLE fan_stars (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    display_name VARCHAR(100) NOT NULL,
+    message TEXT NOT NULL CHECK (char_length(message) <= 200),
+    star_style VARCHAR(30) DEFAULT 'AMBER_GOLD', -- 'JUNIOR_BLUE', 'MARK_PINK', 'AMBER_GOLD'
+    position_x FLOAT NOT NULL, -- Tọa độ Render Canvas (0.00 - 100.00)
+    position_y FLOAT NOT NULL,
+    likes_count INT DEFAULT 0,
+    country_code VARCHAR(10) DEFAULT 'GLOBAL', -- Chỉ lưu mã quốc gia để bảo vệ riêng tư
+    is_approved BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP WITH TIMEZONE DEFAULT NOW()
+);
+
+-- 6. JUMMO_FORTUNES: Quẻ may mắn Jummo mỗi ngày
+CREATE TABLE jummo_fortunes (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    quote_text TEXT NOT NULL,
+    author_type VARCHAR(20) DEFAULT 'JUMMO', -- 'JUNIOR', 'MARK', 'JUMMO'
+    card_background_url TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIMEZONE DEFAULT NOW()
+);
+
+-- 7. JUMMO_DAILY_LOGS: Kiểm soát rút quẻ 1 lần/ngày
+CREATE TABLE jummo_daily_logs (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    fortune_id UUID REFERENCES jummo_fortunes(id),
+    claimed_date DATE DEFAULT CURRENT_DATE,
+    CONSTRAINT unique_user_daily_claim UNIQUE(user_id, claimed_date)
+);
+
+-- 8. JUMMO_SECRET_REWARDS: Phần thưởng ẩn Easter Egg
+CREATE TABLE jummo_secret_rewards (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    title VARCHAR(255) NOT NULL,
+    reward_type VARCHAR(50) NOT NULL, -- 'HANDWRITTEN_LETTER', 'SECRET_VIDEO'
+    content_url TEXT NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP WITH TIMEZONE DEFAULT NOW()
+);
+
+V. KẾ HOẠCH TRIỂN KHAI & LỘ TRÌNH PHÁT TRIỂN (ROADMAP) 
+GIAI ĐOẠN 1: Setup & Core Layout (Tuần 1 - 2)
+├── Thiết kế Wireframe & UI Design trên Figma (Mobile & Desktop)
+├── Khởi tạo Project Next.js 14 (App Router) + Tailwind CSS + Shadcn UI
+├── Kết nối cơ sở dữ liệu Supabase / Firebase & Authentication
+└── Xây dựng Trang chủ, Profile cá nhân và Gallery cơ bản
+
+GIAI ĐOẠN 2: Dynamic Content & Media Engine (Tuần 3 - 4)
+├── Xây dựng trang Lịch trình (Schedule) & Kho phim (Filmography)
+├── Tích hợp Cloudinary/S3 để tối ưu nén ảnh WebP/AVIF tự động
+└── Lập trình Lightbox Viewer, bộ lọc đa tầng và Video Vault
+
+GIAI ĐOẠN 3: Fandom Interactive & Jummo System (Tuần 5 - 6)
+├── Lập trình Canvas Bầu Trời Nguyện Ước (Our Starry Sky) Realtime
+├── Tích hợp Jummo Floating Widget, Theme Switcher & Fortune Cookie
+├── Lập trình Easter Egg nhấp 5 lần kích hoạt "Mưa Jummo" & Thư bí mật
+└── Xây dựng trang Quản trị Admin Panel (/admin) quản lý CRUD & duyệt nội dung
+
+GIAI ĐOẠN 4: Testing, SEO & Launching (Tuần 7)
+├── Kiểm thử Responsive toàn diện trên iOS, Android và Desktop
+├── Tối ưu SEO Metadata, Open Graph Tags cho xem trước Card trên X/Twitter
+└── Deploy chính thức lên Vercel và trỏ Tên miền (Domain) Fansite
+
+
+PHỤ LỤC . NGUỒN THAM KHẢO CHÍNH THỨC
+GMMTV — Junior Panachai artist profile
+GMMTV — Mark Jiruntanin artist profile
+GMMTV — Cherry Magic official trailer/cast
+GMMTV — Perfect 10 Liners series/cast
+GMMTV — My Romance Scammer official information
+GMMTV — MY IDEAL FAN / Jummo introduction
+GMMTV — MY IDEAL FAN video
+GMMTV Shop — Jummo official merchandise
+link figma : https://www.figma.com/design/kEYJptrmnlQkjVKqAbIdof/Untitled?node-id=0-1&t=2fGY8uvuLnjRTI4z-1
+link stitch :https://stitch.withgoogle.com/projects/7819492693475217987

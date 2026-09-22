@@ -8,6 +8,9 @@
     "build": "vite build",
     "lint": "oxlint",
     "test": "vitest run",
+    "db:seed": "node scripts/build-seed.mjs",
+    "db:bundle": "node scripts/build-database-bundle.mjs",
+    "test:db": "node scripts/test-db.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -17,6 +20,7 @@
     "react-dom": "^19.2.8"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.7",
