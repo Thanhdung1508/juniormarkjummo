@@ -8,7 +8,7 @@
 - Username local: `postgres`
 - Password local: xem file `.local/postgres-password.local` trong dự án. Không commit hoặc đưa vào React.
 - Dữ liệu bền vững: `.local/postgres/`, đã loại khỏi Git.
-- 24 bảng nghiệp vụ trong schema `public`; 3 bảng nội bộ trong `private`.
+- 27 bảng nghiệp vụ trong schema `public`; 3 bảng nội bộ trong `private`.
 
 Dùng thông số trên trong pgAdmin hoặc HeidiSQL có hỗ trợ PostgreSQL. Database local có các schema tương thích tối thiểu `auth` và `storage` để chạy migrations; **không phải một Supabase server**. Đăng ký email, OAuth, REST API, upload và realtime chưa chạy chỉ bằng database này. Frontend hiện chưa nối catalog mới.
 
@@ -99,3 +99,8 @@ erDiagram
 ```
 
 `auth_users` trong sơ đồ là `auth.users` của Supabase.
+
+
+## Cập nhật tài khoản ngày 22/09/2026
+
+Đã áp dụng thêm `003_archive_items.sql` và `006_account_features.sql`. Trang `#/account` có hồ sơ, cài đặt, quyền riêng tư, nơi lưu trữ và ghi chú. Xem [account-features.md](account-features.md) để cấu hình Supabase và biết giới hạn kiểm thử. Catalog các trang nội dung vẫn chưa được nối toàn bộ.

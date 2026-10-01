@@ -81,6 +81,38 @@ create policy "Submit own pending message" on public.fan_messages for insert to 
 create index fan_messages_public_feed on public.fan_messages (kind,created_at desc) where status='approved';
 commit;
 
+-- FILE: 003_archive_items.sql
+-- Suggested migration, reviewed against 001/002. Apply once after both.
+-- No change to public message columns or anonymous write permissions.
+begin;
+create table public.archive_items (
+  user_id uuid not null references auth.users(id) on delete cascade,
+  kind text not null check (kind in ('memory','event','favorite','progress')),
+  item_id text not null check (char_length(item_id) between 1 and 200),
+  payload jsonb not null default '{}' check (jsonb_typeof(payload) = 'object' and octet_length(payload::text) <= 8192),
+  primary key (user_id,kind,item_id)
+);
+alter table public.archive_items enable row level security;
+revoke all on public.archive_items from anon, authenticated;
+grant select, insert, update, delete on public.archive_items to authenticated;
+create policy "Read own archive" on public.archive_items for select to authenticated using ((select auth.uid()) = user_id);
+create policy "Insert own archive" on public.archive_items for insert to authenticated with check ((select auth.uid()) = user_id);
+create policy "Update own archive" on public.archive_items for update to authenticated using ((select auth.uid()) = user_id) with check ((select auth.uid()) = user_id);
+create policy "Delete own archive" on public.archive_items for delete to authenticated using ((select auth.uid()) = user_id);
+-- Owner status is returned by a constrained authenticated function; sender UUID stays private.
+create policy "Read own submitted messages" on public.fan_messages for select to authenticated using ((select auth.uid()) = user_id);
+create function public.my_archive_messages()
+returns table (id uuid, kind text, name text, country text, body text, spectrum text, status text, created_at timestamptz)
+language sql stable security definer set search_path = '' as $$
+  select m.id,m.kind,m.name,m.country,m.body,m.spectrum,m.status,m.created_at
+  from public.fan_messages m where m.user_id = (select auth.uid())
+  order by m.created_at desc limit 100;
+$$;
+revoke all on function public.my_archive_messages() from public, anon;
+grant execute on function public.my_archive_messages() to authenticated;
+commit;
+
+
 -- FILE: 003_content_catalog.sql
 -- Chạy sau 001 và 002. Nội dung published mới được đọc công khai.
 begin;
@@ -510,6 +542,75 @@ comment on column public.artists.full_name_english is 'Họ tên đầy đủ b�
 comment on column public.artists.full_name_thai is 'Họ tên đầy đủ bằng tiếng Thái; để trống cho đến khi xác minh nguồn.';
 commit;
 
+-- FILE: 006_account_features.sql
+-- Chạy sau 003_archive_items và 005_document_features. Không lưu mật khẩu trong public.
+begin;
+alter table public.fan_profiles add column bio text not null default '' check(char_length(bio)<=500);
+grant update(bio) on public.fan_profiles to authenticated;
+alter table public.archive_items drop constraint archive_items_kind_check;
+alter table public.archive_items add constraint archive_items_kind_check check(kind in ('memory','event','favorite','progress','photo','page'));
+
+create table public.user_settings (
+ user_id uuid primary key references auth.users(id) on delete cascade,
+ show_country boolean not null default false,
+ updated_at timestamptz not null default now()
+);
+create table public.user_notes (
+ id uuid primary key default gen_random_uuid(),
+ user_id uuid not null references auth.users(id) on delete cascade,
+ title text not null check(char_length(btrim(title)) between 1 and 120),
+ body text not null default '' check(char_length(body)<=10000),
+ created_at timestamptz not null default now(),
+ updated_at timestamptz not null default now()
+);
+create index user_notes_owner_date on public.user_notes(user_id,updated_at desc);
+do $$ declare t text; begin
+ foreach t in array array['user_settings','user_notes'] loop
+  execute format('alter table public.%I enable row level security',t);
+  execute format('revoke all on public.%I from public,anon,authenticated',t);
+  execute format('grant select,insert,delete on public.%I to authenticated',t);
+  execute format('create policy own_read on public.%I for select to authenticated using((select auth.uid())=user_id)',t);
+  execute format('create policy own_insert on public.%I for insert to authenticated with check((select auth.uid())=user_id)',t);
+  execute format('create policy own_update on public.%I for update to authenticated using((select auth.uid())=user_id) with check((select auth.uid())=user_id)',t);
+  execute format('create policy own_delete on public.%I for delete to authenticated using((select auth.uid())=user_id)',t);
+  execute format('create trigger stamp before update on public.%I for each row execute function private.touch_updated_at()',t);
+ end loop;
+end; $$;
+-- Upsert gửi cả user_id; RLS vẫn ngăn đổi chủ sở hữu.
+grant update(user_id,show_country) on public.user_settings to authenticated;
+grant update(title,body) on public.user_notes to authenticated;
+
+-- Lựa chọn áp dụng cho lời nhắn mới, không sửa lại bài cũ hay xác định vị trí người dùng.
+create function private.apply_message_privacy() returns trigger language plpgsql security definer set search_path='' as $$
+begin
+ if not coalesce((select show_country from public.user_settings where user_id=new.user_id),false) then
+  new.country='GLOBAL'; new.country_code='GLOBAL';
+ end if;
+ return new;
+end; $$;
+revoke all on function private.apply_message_privacy() from public,anon,authenticated;
+create trigger message_privacy before insert on public.fan_messages for each row execute function private.apply_message_privacy();
+
+-- Mọi truy vấn ràng buộc auth.uid(), danh sách bảng cố định. Không xuất session/mật khẩu/quyền nội bộ.
+-- SECURITY DEFINER chỉ để đọc lời nhắn theo user_id (cột này không cấp trực tiếp cho trình duyệt).
+create function public.export_my_data() returns jsonb language plpgsql stable security definer set search_path='' as $$
+declare result jsonb='{}'; t text; rows jsonb; begin
+ if auth.uid() is null then raise exception 'Đăng nhập để xuất dữ liệu.' using errcode='42501'; end if;
+ select to_jsonb(p) into rows from public.fan_profiles p where id=auth.uid();
+ result=jsonb_build_object('profile',rows);
+ foreach t in array array['user_settings','user_notes','archive_items','message_likes','media_bookmarks','user_checklist','fan_progress','jummo_daily_logs'] loop
+  execute format('select coalesce(jsonb_agg(to_jsonb(x)),''[]''::jsonb) from public.%I x where user_id=auth.uid()',t) into rows;
+  result=result||jsonb_build_object(t,rows);
+ end loop;
+ select coalesce(jsonb_agg(to_jsonb(m)-'user_id'),'[]'::jsonb) into rows from public.fan_messages m where user_id=auth.uid();
+ return result||jsonb_build_object('messages',rows);
+end; $$;
+revoke all on function public.export_my_data() from public,anon;
+grant execute on function public.export_my_data() to authenticated;
+comment on table public.user_notes is 'Ghi chú cá nhân dạng chữ thuần; chỉ chủ tài khoản đọc/sửa/xóa.';
+comment on column public.user_settings.show_country is 'Cho phép hiển thị quốc gia trên lời nhắn mới. Mặc định ẩn.';
+commit;
+
 -- FILE: seed.sql
 -- Generated by npm run db:seed. Dữ liệu lịch/quỹ is_demo không phải thông báo thật.
 -- Chạy sau 001–005. Chạy lại không ghi đè nội dung quản trị đã sửa.
@@ -528,6 +629,8 @@ insert into public."work_roles" ("work_id","artist_id","role_name") values ('lin
 insert into public."work_roles" ("work_id","artist_id","role_name") values ('liners','mark','Wine') on conflict do nothing;
 insert into public."work_roles" ("work_id","artist_id","role_name") values ('romance','junior','Tim') on conflict do nothing;
 insert into public."work_roles" ("work_id","artist_id","role_name") values ('romance','mark','Pai') on conflict do nothing;
+insert into public."work_roles" ("work_id","artist_id","role_name") values ('fancon','junior','Performer') on conflict do nothing;
+insert into public."work_roles" ("work_id","artist_id","role_name") values ('fancon','mark','Performer') on conflict do nothing;
 insert into public."media_items" ("sort_order","status","id","title","alt","kind","url","file_name","credit","source_url","topic","tag","position","downloadable") values (0,'published','photo-01','A Little Promise','Hai người móc tay và mỉm cười trên sân khấu','photo','/images/fan-photos/HNwgVKGbsAA2z-b.jpg','HNwgVKGbsAA2z-b.jpg','Bộ ảnh do người dùng cung cấp • Giữ nguyên watermark trên ảnh gốc.',NULL,'stage','TOGETHER ON STAGE','center 30%',true) on conflict do nothing;
 insert into public."media_items" ("sort_order","status","id","title","alt","kind","url","file_name","credit","source_url","topic","tag","position","downloadable") values (1,'published','photo-02','By Your Side','Hai người trong trang phục trắng bên cửa sổ','photo','/images/fan-photos/HNpnaOZbsAAGFbv.jpg','HNpnaOZbsAAGFbv.jpg','CITER • Ảnh do người dùng cung cấp.',NULL,'cozy','COZY DAYS','center 30%',true) on conflict do nothing;
 insert into public."media_items" ("sort_order","status","id","title","alt","kind","url","file_name","credit","source_url","topic","tag","position","downloadable") values (2,'published','photo-03','Soft Starlight','Chân dung trong áo khoác trắng viền đen','photo','/images/fan-photos/HLt1Jy5bcAAdFxD.jpg','HLt1Jy5bcAAdFxD.jpg','Bộ ảnh do người dùng cung cấp • Giữ nguyên watermark trên ảnh gốc.',NULL,'portrait','PORTRAIT DIARY','center 25%',true) on conflict do nothing;
@@ -567,9 +670,10 @@ insert into public."media_artists" ("media_id","artist_id") values ('photo-15','
 insert into public."media_artists" ("media_id","artist_id") values ('photo-15','mark') on conflict do nothing;
 insert into public."media_artists" ("media_id","artist_id") values ('photo-16','junior') on conflict do nothing;
 insert into public."media_artists" ("media_id","artist_id") values ('photo-16','mark') on conflict do nothing;
-insert into public."tracks" ("sort_order","status","id","title","subtitle","audio_url","kind") values (0,'published','track-1','Warm Whisper','Cherry Magic • Acoustic mood',NULL,'playlist') on conflict do nothing;
-insert into public."tracks" ("sort_order","status","id","title","subtitle","audio_url","kind") values (1,'published','track-2','Acoustic Starlight','Midnight Session',NULL,'playlist') on conflict do nothing;
-insert into public."tracks" ("sort_order","status","id","title","subtitle","audio_url","kind") values (2,'published','track-3','Our Sunnymoon','Acoustic Live',NULL,'playlist') on conflict do nothing;
+insert into public."tracks" ("id","title","subtitle","audio_url","kind","status","sort_order") values ('playlist-1','อย่าน่ารักเกิน (Cutie Overload)','Junior Panachai, Mark Jiruntanin','/audio/ytmp3free.cc_cutie-overload-junior-panachai-mark-jiruntanin-youtubemp3free.org.mp3','playlist','published',0) on conflict do nothing;
+insert into public."tracks" ("id","title","subtitle","audio_url","kind","status","sort_order") values ('playlist-2','วางใจ (Trust Me)','Junior Panachai, Mark Jiruntanin','/audio/ytmp3free.cc_trust-me-ostmy-romance-scammer-junior-panachai-mark-jiruntanin-youtubemp3free.org.mp3','playlist','published',1) on conflict do nothing;
+insert into public."tracks" ("id","title","subtitle","audio_url","kind","status","sort_order") values ('playlist-3','ให้ได้รัก (Let Me Love You)','Junior Panachai','/audio/ytmp3free.cc_let-me-love-you-ostmy-romance-scammer-junior-panachai-youtubemp3free.org.mp3','playlist','published',2) on conflict do nothing;
+insert into public."tracks" ("id","title","subtitle","audio_url","kind","status","sort_order") values ('playlist-4','No One Else','Perth Tanapon, Santa Pongsapak','/audio/ytmp3free.cc_no-one-else-ost-perfect-10-liners-perth-tanapon-santa-pongsapak-youtubemp3free.org.mp3','playlist','published',3) on conflict do nothing;
 insert into public."events" ("sort_order","status","id","title","description","starts_at","all_day","category","is_demo","image") values (0,'published','acoustic','Birthday Acoustic Night • Starlit Echoes','Sự kiện minh họa từ bản thiết kế, chưa xác nhận.','2026-06-15T00:00:00+07:00',true,'fancon',true,'/images/fan-photos/HLt1Jy5bcAAdFxD.jpg') on conflict do nothing;
 insert into public."events" ("sort_order","status","id","title","description","starts_at","all_day","category","is_demo","image") values (1,'published','press','My Romance Scammer • Press Conference','Sự kiện minh họa từ bản thiết kế, chưa xác nhận.','2026-09-15T00:00:00+07:00',true,'press',true,'/images/fan-photos/HNwNJ4GbsAE5PwW.jpg') on conflict do nothing;
 insert into public."events" ("sort_order","status","id","title","description","starts_at","all_day","category","is_demo","image") values (2,'published','gathering','Sunflowers for You • Birthday Gathering','Sự kiện minh họa từ bản thiết kế, chưa xác nhận.','2026-10-23T00:00:00+07:00',true,'fancon',true,'/images/fan-photos/HNr2eA_aUAAAesn.jpg') on conflict do nothing;
@@ -588,6 +692,8 @@ insert into public."editorial_entries" ("sort_order","status","id","section","ti
 insert into public."editorial_entries" ("sort_order","status","id","section","title","body") values (0,'published','attic-letter','letter','Gửi các vì sao thân yêu','Gửi các vì sao thân yêu,
 Một ngày dù bận rộn đến đâu, mong bạn vẫn giữ cho mình một khoảng bình yên. Cảm ơn bạn đã mang âm nhạc và nụ cười đến góc nhỏ này.
 — Lời nhắn biên tập của fansite, không phải thư thật của nghệ sĩ.') on conflict do nothing;
+insert into public."editorial_entries" ("id","title","body","image","subtitle","tag","section","sort_order","status") values ('hero-duo','Junior & Mark','Ánh Dương & Ánh Nguyệt • Voice of Destiny','/images/fan-photos/HNwNJ4GbsAE5PwW.jpg','IN OUR WARM LITTLE WORLD','THE CELESTIAL DUO','hero',0,'published') on conflict do nothing;
+insert into public."editorial_entries" ("id","title","body","image","subtitle","tag","section","sort_order","status") values ('hero-studio','Panachai & Jiruntanin','Một chút bình yên, một khoảng trời chung','/images/fan-photos/HNpnaOZbsAAGFbv.jpg','COZY MOMENTS & SUNLIGHT','STUDIO BACKSTAGE LIFE','hero',1,'published') on conflict do nothing;
 insert into public."glossary" ("sort_order","status","id","title","body") values (0,'published','term-1','Junior / Juju','Tên gọi thân mật dành cho Junior trong góc lưu trữ fansite.') on conflict do nothing;
 insert into public."glossary" ("sort_order","status","id","title","body") values (1,'published','term-2','Mark / Markji','Tên gọi thân mật dành cho Mark trong góc lưu trữ fansite.') on conflict do nothing;
 insert into public."glossary" ("sort_order","status","id","title","body") values (2,'published','term-3','Bé Mõ Jummo','Linh vật kết nối Sun & Moon của JuniorMark.') on conflict do nothing;

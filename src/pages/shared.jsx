@@ -1,91 +1,108 @@
+import { t as tr, useLanguage, localize } from '../i18n/language'
+import { catalog } from '../data/catalog'
 import { useState } from 'react'
-import { downloadText, quizResult } from '../lib/archive'
+import { quizResult } from '../lib/archive'
+import ShareCardButton from '../components/ShareCardButton'
 
 export function PageIntro({ eyebrow, title, description, children }) {
+  useLanguage()
   return (
     <header className="archive-intro">
       <div>
-        <span className="eyebrow">{eyebrow}</span>
-        <h1 tabIndex={-1}>{title}</h1>
-        <p>{description}</p>
+        <span className="eyebrow">{localize(eyebrow)}</span>
+        <h1 tabIndex={-1}>{localize(title)}</h1>
+        <p>{localize(description)}</p>
       </div>
       {children}
     </header>
   )
 }
 export function Chips({ label, options, value, onChange }) {
+  useLanguage()
   return (
     <div className="chips" role="group" aria-label={label}>
       {options.map(([id, name]) => (
         <button type="button" key={id} aria-pressed={value === id} onClick={() => onChange(id)}>
-          {name}
+          {localize(name)}
         </button>
       ))}
     </div>
   )
 }
 export function SectionTitle({ eyebrow, children }) {
+  useLanguage()
   return (
     <div className="archive-heading">
-      <span className="eyebrow">{eyebrow}</span>
+      <span className="eyebrow">{localize(eyebrow)}</span>
       <h2>{children}</h2>
     </div>
   )
 }
 export function Empty({ children }) {
+  useLanguage()
   return (
     <p className="empty-state" role="status">
       {children}
     </p>
   )
 }
-export function Tip({ children }) {
+export function Tip({
+  children,
+  title = tr('Jummo nhắc bạn', 'A reminder from Jummo'),
+  className = '',
+  image = '/images/jummo-mascot.png',
+}) {
+  useLanguage()
   return (
-    <aside className="archive-tip">
-      <img src="/images/jummo-mascot.png" width="48" height="58" alt="Jummo" />
+    <aside className={`archive-tip ${className}`.trim()}>
+      <img src={image} width="48" height="58" alt="Jummo" />
       <div>
-        <b>Jummo nhắc bạn</b>
+        <b>{localize(title)}</b>
         <p>{children}</p>
       </div>
     </aside>
   )
 }
 export function Quiz() {
+  useLanguage()
   const [answers, setAnswers] = useState([]),
     [result, setResult] = useState(false)
-  const questions = [
-    'Một ngày mệt mỏi khép lại, bạn muốn điều gì?',
-    'Bạn sẽ mang gì đến tiệm đĩa?',
-    'Điều bạn muốn gửi tới JuniorMark?',
-  ]
-  const choices = [
-    ['Một buổi jam tràn năng lượng', 'Một giai điệu thật dịu', 'Một cái ôm của Jummo'],
-    ['Hoa hướng dương', 'Một chiếc đĩa yêu thích', 'Một lá thư nhỏ'],
-    ['Nụ cười và sức mạnh', 'Bình yên và cảm hứng', 'Tình yêu của cả fandom'],
-  ]
-  const title = ['Solar — Ánh Dương', 'Lunar — Ánh Nguyệt', 'Jummo — Sunflower'][
-    quizResult(answers)
-  ]
+  const questions = catalog.quiz_questions.map((q) => localize(q.prompt))
+  const choices = catalog.quiz_questions.map((q) =>
+    [q.solar_choice, q.lunar_choice, q.jummo_choice].map(localize),
+  )
+  if (!questions.length) return <Empty>{tr('Chưa có câu hỏi.', 'No questions yet.')}</Empty>
+  const title = [
+    tr('Ánh Dương', 'Solar — Sunshine'),
+    tr('Ánh Nguyệt', 'Lunar — Moonlight'),
+    tr('Jummo — Hướng Dương', 'Jummo — Sunflower'),
+  ][quizResult(answers)]
   return (
     <section className="archive-panel quiz-panel">
-      <span className="eyebrow">CELESTIAL SOUL TEST • MINI QUIZ</span>
-      <h2>Góc Sưu Tầm Thẻ Bài</h2>
+      <span className="eyebrow">
+        {tr('TRẮC NGHIỆM TÂM HỒN TINH TÚ', 'CELESTIAL SOUL TEST • MINI QUIZ')}
+      </span>
+      <h2>{tr('Góc Sưu Tầm Thẻ Bài', 'Keepsake Card Collection')}</h2>
       {result ? (
         <>
-          <img className="quiz-mascot" src="/images/jummo-mascot.png" alt="Thẻ Jummo" />
-          <h3>{title}</h3>
-          <p>Thẻ kỷ niệm vui dành riêng cho bạn.</p>
-          <button
-            className="primary-button"
-            onClick={() =>
-              downloadText(
-                'the-jummo.txt',
-                `JUMMO CELESTIAL PASS\n${title}\nThẻ kỷ niệm từ JuniorMark fansite, không phải chứng nhận chính thức.`,
-              )
-            }
-          >
-            Lưu thẻ kỷ niệm
-          </button>
+          <img
+            className="quiz-mascot"
+            src="/images/jummo-mascot.png"
+            alt={tr('Thẻ Jummo', 'Jummo card')}
+          />
+          <h3>{localize(title)}</h3>
+          <p>{tr('Thẻ kỷ niệm vui dành riêng cho bạn.', 'A fun keepsake card just for you.')}</p>
+          <ShareCardButton
+            card={{
+              title,
+              subtitle: tr('Tâm Hồn Tinh Tú · Thẻ trắc nghiệm', 'Celestial Soul · Quiz keepsake'),
+              lines: [
+                tr('Thẻ kỷ niệm vui dành riêng cho bạn.', 'A fun keepsake card just for you.'),
+              ],
+            }}
+            filename="jummo-quiz"
+            label={tr('Lưu thẻ kỷ niệm PNG', 'Save keepsake PNG')}
+          />
           <button
             className="text-button"
             onClick={() => {
@@ -93,12 +110,15 @@ export function Quiz() {
               setResult(false)
             }}
           >
-            Làm lại
+            {' '}
+            {tr('Làm lại', 'Try again')}{' '}
           </button>
         </>
       ) : (
         <>
-          <p>Câu hỏi {answers.length + 1}/3</p>
+          <p>
+            {tr('Câu hỏi', 'Question')} {answers.length + 1}/{questions.length}
+          </p>
           <h3>{questions[answers.length]}</h3>
           <div className="quiz-options">
             {choices[answers.length].map((c, i) => (
@@ -107,14 +127,14 @@ export function Quiz() {
                 onClick={() => {
                   const next = [...answers, i]
                   setAnswers(next)
-                  if (next.length === 3) setResult(true)
+                  if (next.length === questions.length) setResult(true)
                 }}
               >
                 {String.fromCharCode(65 + i)} · {c}
               </button>
             ))}
           </div>
-          <progress max="3" value={answers.length} />
+          <progress max={questions.length} value={answers.length} />
         </>
       )}
     </section>

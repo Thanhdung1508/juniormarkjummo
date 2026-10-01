@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react'
 import { beforeEach, expect, it, vi } from 'vitest'
-vi.mock('../../lib/supabase', () => ({ supabase: null }))
+vi.mock('../../lib/apiClient', () => ({ apiClient: null }))
 import useMessages from './useMessages'
 beforeEach(() => localStorage.clear())
 it('lưu bản xem thử, khôi phục sau remount và tách sao khỏi nốt nhạc', async () => {

@@ -18,5 +18,5 @@ it('skip link giữ nguyên trang và nội dung tìm kiếm', async () => {
   expect(window.location.hash).toBe('#/media')
   expect(screen.getByRole('searchbox')).toHaveValue('sunshine')
   expect(screen.getByRole('main')).toHaveFocus()
-  expect(screen.getByRole('button', { name: 'Xem ảnh Our Little Sunshine' })).toBeInTheDocument()
+  expect(screen.getByRole('button', { name: 'Xem ảnh Mặt trời nhỏ của chúng mình' })).toBeInTheDocument()
 })

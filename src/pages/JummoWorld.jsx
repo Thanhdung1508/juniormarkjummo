@@ -1,53 +1,79 @@
+import { t as tr, useLanguage, localize } from '../i18n/language'
+import { catalog } from '../data/catalog'
 import { useState } from 'react'
 import { downloadText } from '../lib/archive'
 import { Chips, PageIntro, Quiz, SectionTitle } from './shared'
 
-export default function JummoWorld({ showInfo, openPhoto }) {
+export default function JummoWorld({ openPhoto }) {
+  useLanguage()
   // Năm lần chạm mở thư do fansite biên tập; không gán lời nhắn này cho nghệ sĩ.
   const [mood, setMood] = useState('music'),
     [rain, setRain] = useState(false),
     [rainDrops, setRainDrops] = useState([]),
     [taps, setTaps] = useState(0)
+
   function toggleRain() {
     if (!rain) {
-      // Generate once per shower so other page interactions don't move the drops.
-      const count = 20
       setRainDrops(
-        Array.from({ length: count }, (_, i) => {
-          const duration = 6 + Math.random() * 4
+        Array.from({ length: 18 }, () => {
+          const fg = Math.random() > 0.7
+          const dur = fg ? 4 + Math.random() * 2 : 6 + Math.random() * 4
+          const top = -15 + Math.random() * 95
+
           return {
-            left: `${((i + Math.random()) / count) * 100}%`,
-            animationDelay: `${-Math.random() * duration}s`,
-            animationDuration: `${duration}s`,
-            '--drop-size': `${120 + Math.random() * 30}px`,
-            opacity: 0.65 + Math.random() * 0.3,
-            '--drop-drift': `${Math.random() * 70 - 35}px`,
+            '--drop-left': `${Math.random() * 92 + 2}vw`,
+            '--start-top': `${top}vh`,
+            '--drop-size': `${fg ? 200 + Math.random() * 40 : 90 + Math.random() * 30}px`,
+            '--drop-drift': `${Math.random() * 100 - 30}px`,
+            '--drop-rotation': `${Math.random() * 70 - 20}deg`,
+            animationDelay: `${Math.random() * 1}s`,
+            animationDuration: `${dur}s`,
+            opacity: fg ? 0.9 + Math.random() * 0.1 : 0.2 + Math.random() * 0.4,
           }
         }),
       )
     }
     setRain((v) => !v)
   }
-  const moods = {
-    music: ['Jummo Headphone', 'Đắm chìm trong tiếng guitar và một giai điệu ấm áp.', '/jummo_dance.gif'],
-    book: ['Jummo Storybook', 'Một góc yên tĩnh để đọc sách và lưu lại câu chuyện.', '/reading.gif'],
-    heart: ['Sunflower Heart', 'Gửi thật nhiều yêu thương tới JuniorMark và bạn.', '/hugging.gif'],
-  }
-  const letter =
-    'Gửi các vì sao thân yêu,\nMột ngày dù bận rộn đến đâu, mong bạn vẫn giữ cho mình một khoảng bình yên. Cảm ơn bạn đã mang âm nhạc và nụ cười đến góc nhỏ này.\n— Lời nhắn biên tập của fansite, không phải thư thật của nghệ sĩ.'
+  const moods = Object.fromEntries(
+    catalog.editorial_entries
+      .filter((e) => e.section === 'mood')
+      .map((e, i) => [
+        ['music', 'book', 'heart'][i] || e.id,
+        [
+          localize(e.title),
+          localize(e.body),
+          ['/jummo_dance.gif', '/reading.gif', '/hugging.gif'][i] || e.image,
+        ],
+      ]),
+  )
+  const activeMood = moods[mood] ||
+    Object.values(moods)[0] || [
+      'Jummo',
+      tr('Chưa có lời nhắn.', 'No messages yet.'),
+      '/images/jummo-mascot.png',
+    ]
+  const letter = localize(catalog.editorial_entries.find((e) => e.section === 'letter')?.body || '')
   return (
     <>
       <PageIntro
-        eyebrow="JUNIOR (SUN) & MARK (MOON) SANCTUARY"
+        eyebrow={tr('GÓC BÌNH YÊN CỦA JUNIOR VÀ MARK', 'JUNIOR (SUN) & MARK (MOON) SANCTUARY')}
         title={
           <>
-            Jummo’s Cosmic Studio &<br /> Secret Attic
+            {' '}
+            {tr('Phòng Vũ Trụ Của Jummo Và', 'Jummo’s Cosmic Studio &')}
+            <br /> {tr('Gác Xép Bí Mật', 'Secret Attic')}{' '}
           </>
         }
-        description="Khám phá phòng sinh hoạt của Jummo, người bạn nhỏ trong dải ngân hà JuniorMark."
+        description={tr(
+          'Khám phá phòng sinh hoạt của Jummo, người bạn nhỏ trong dải ngân hà JuniorMark.',
+          'Explore the home of Jummo, your little friend in the JuniorMark galaxy.',
+        )}
       >
         <button className="primary-button" onClick={toggleRain} aria-pressed={rain}>
-          {rain ? 'Dừng Mưa Jummo' : 'Kích hoạt Mưa Jummo'}
+          {rain
+            ? tr('Dừng Mưa Jummo', 'Stop Jummo Rain')
+            : tr('Kích hoạt Mưa Jummo', 'Start Jummo Rain')}
         </button>
       </PageIntro>
       {rain && (
@@ -66,17 +92,22 @@ export default function JummoWorld({ showInfo, openPhoto }) {
       )}
       <div className="two-columns">
         <section className="archive-panel mascot-stage">
-          <button aria-label="Chạm Jummo mở thư" onClick={() => setTaps((n) => Math.min(5, n + 1))}>
-            <img src={moods[mood][2]} alt={moods[mood][0]} />
+          <button
+            aria-label={tr('Chạm Jummo mở thư', 'Tap Jummo to open the letter')}
+            onClick={() => setTaps((n) => Math.min(5, n + 1))}
+          >
+            <img src={activeMood[2]} alt={activeMood[0]} />
           </button>
           <p>
-            {moods[mood][0]} • Chạm {taps}/5
+            {activeMood[0]} {tr('• Chạm', '• Taps')} {taps}/5
           </p>
         </section>
         <section className="archive-panel mood-console">
-          <SectionTitle eyebrow="MOOD SWITCHER CONSOLE">Chọn biểu cảm & phụ kiện</SectionTitle>
+          <SectionTitle eyebrow={tr('BẢNG CHỌN TÂM TRẠNG', 'MOOD SWITCHER CONSOLE')}>
+            {tr('Chọn biểu cảm & phụ kiện', 'Choose expressions & accessories')}
+          </SectionTitle>
           <Chips
-            label="Tâm trạng Jummo"
+            label={tr('Tâm trạng Jummo', 'Jummo mood')}
             value={mood}
             onChange={setMood}
             options={Object.entries(moods).map(([id, m]) => [
@@ -87,24 +118,37 @@ export default function JummoWorld({ showInfo, openPhoto }) {
               </span>,
             ])}
           />
-          <h3 aria-live="polite">{moods[mood][1]}</h3>
+          <h3 aria-live="polite">{activeMood[1]}</h3>
           <div className="profile-tags">
-            <span>Cosmic Blue & Sun Gold</span>
-            <span>Gắn kết trái tim</span>
+            <span>{tr('Xanh Vũ Trụ & Vàng Ánh Dương', 'Cosmic Blue & Sun Gold')}</span>
+            <span>{tr('Gắn kết trái tim', 'Connecting hearts')}</span>
           </div>
           <a className="text-button" href="#/wall">
-            Jummo chào bạn • Gửi nốt nhạc →
+            {' '}
+            {tr('Jummo chào bạn • Gửi nốt nhạc →', 'Hello from Jummo • Leave a note →')}{' '}
           </a>
         </section>
       </div>
-      <SectionTitle eyebrow="SECRET MOMENTS & WARM HUGS">
-        Những Cái Ôm Ngọt Ngào Bên Jummo
+      <SectionTitle
+        eyebrow={tr('KHOẢNH KHẮC BÍ MẬT VÀ NHỮNG CÁI ÔM', 'SECRET MOMENTS & WARM HUGS')}
+      >
+        {' '}
+        {tr('Những Cái Ôm Ngọt Ngào Bên Jummo', 'Sweet Hugs with Jummo')}{' '}
       </SectionTitle>
       <div className="three-columns">
         {[
-          ['/images/junior-mark.png', 'Vòng tay bên người bạn nhỏ'],
-          ['/images/fan-photos/HPWCyKybkAAHKUm.jpg', 'Jummo cùng biển bong bóng'],
-          ['/images/fan-photos/HLlKtNeaUAA42uM.jpg', 'Nhật ký những ngày bình yên'],
+          [
+            '/images/junior-mark.png',
+            tr('Vòng tay bên người bạn nhỏ', 'An embrace with our little friend'),
+          ],
+          [
+            '/images/fan-photos/HPWCyKybkAAHKUm.jpg',
+            tr('Jummo cùng biển bong bóng', 'Jummo in a sea of bubbles'),
+          ],
+          [
+            '/images/fan-photos/HLlKtNeaUAA42uM.jpg',
+            tr('Nhật ký những ngày bình yên', 'A diary of peaceful days'),
+          ],
         ].map(([src, title]) => (
           <button
             className="image-story"
@@ -114,7 +158,10 @@ export default function JummoWorld({ showInfo, openPhoto }) {
                 src,
                 title,
                 alt: title,
-                credit: 'Ảnh từ thiết kế / bộ ảnh người dùng cung cấp',
+                credit: tr(
+                  'Ảnh từ thiết kế / bộ ảnh người dùng cung cấp',
+                  'Photo from the design / user-supplied collection',
+                ),
               })
             }
           >
@@ -127,60 +174,57 @@ export default function JummoWorld({ showInfo, openPhoto }) {
       </div>
       <section className="archive-panel attic-panel">
         <div>
-          <SectionTitle eyebrow="SECRET HANDWRITTEN VAULT">
-            Hòm Thư Tay Bí Mật Từ Tầng Gác Xép
+          <SectionTitle eyebrow={tr('KHO THƯ TAY BÍ MẬT', 'SECRET HANDWRITTEN VAULT')}>
+            {' '}
+            {tr('Hòm Thư Tay Bí Mật Từ Tầng Gác Xép', 'The Secret Letterbox in the Attic')}{' '}
           </SectionTitle>
-          <p>Chạm vào Jummo 5 lần để mở lời nhắn kỷ niệm của fansite.</p>
+          <p>
+            {tr(
+              'Chạm vào Jummo 5 lần để mở lời nhắn kỷ niệm của fansite.',
+              'Tap Jummo 5 times to open the fansite keepsake message.',
+            )}
+          </p>
           <progress max="5" value={taps} />
         </div>
         <div className="letter-paper">
           {taps === 5 ? (
             <>
-              <h3>Gửi các vì sao thân yêu</h3>
+              <h3>{tr('Gửi các vì sao thân yêu', 'Dear beloved stars')}</h3>
               <p>{letter}</p>
               <button
                 className="secondary-button"
                 onClick={() => downloadText('loi-nhan-jummo.txt', letter)}
               >
-                Lưu dòng chữ này ↓
+                {' '}
+                {tr('Lưu dòng chữ này ↓', 'Save this message ↓')}{' '}
               </button>
             </>
           ) : (
-            <p>✉ Phong thư đang chờ bạn • {taps}/5</p>
+            <p>
+              {tr('✉ Phong thư đang chờ bạn •', '✉ Your letter is waiting •')} {taps}/5
+            </p>
           )}
         </div>
       </section>
-      <SectionTitle eyebrow="JUMMO GOODIES & DIGITAL MERCH">Tải Về Quà Tặng Của Jummo</SectionTitle>
+      <SectionTitle eyebrow={tr('QUÀ TẶNG SỐ CỦA JUMMO', 'JUMMO GOODIES & DIGITAL MERCH')}>
+        {tr('Tải Về Quà Tặng Của Jummo', 'Download Jummo Gifts')}
+      </SectionTitle>
       <div className="three-columns">
-        <article className="archive-panel">
-          <h3>Jummo Mascot</h3>
-          <p>Ảnh mascot đang dùng trong giao diện.</p>
-          <a className="secondary-button" href="/images/jummo-mascot.png" download>
-            Tải ảnh mascot ↓
-          </a>
-        </article>
-        <article className="archive-panel">
-          <h3>Bộ Sticker & Hình Nền</h3>
-          <p>Thiết kế có mục 24 sticker và hình nền 4K. File gốc chưa được cung cấp.</p>
-          <button className="secondary-button" disabled>
-            Chưa có gói tải
-          </button>
-        </article>
-        <article className="archive-panel">
-          <h3>Hộ Chiếu & Nhật Ký</h3>
-          <p>Lưu lại hành trình ghé thăm tiệm đĩa.</p>
-          <button
-            className="secondary-button"
-            onClick={() =>
-              showInfo(
-                'Nhật ký Jummo',
-                'Hôm nay bạn đã ghé gác xép, chọn một tâm trạng và gửi yêu thương. Hãy lưu lời nhắn sau khi mở phong thư.',
-              )
-            }
-          >
-            Xem cuốn nhật ký
-          </button>
-        </article>
+        {catalog.downloads.map((item) => (
+          <article className="archive-panel" key={item.id}>
+            <h3>{localize(item.title)}</h3>
+            <p>{localize(item.description)}</p>
+            {item.url ? (
+              <a className="secondary-button" href={item.url} download>
+                {tr('Tải về ↓', 'Download ↓')}
+              </a>
+            ) : (
+              <button className="secondary-button" disabled>
+                {tr('Chưa có gói tải', 'No download package yet')}
+              </button>
+            )}
+          </article>
+        ))}
       </div>
       <Quiz />
     </>

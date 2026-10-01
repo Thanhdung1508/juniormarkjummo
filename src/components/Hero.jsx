@@ -1,21 +1,19 @@
+import { t, useLanguage, localize } from '../i18n/language'
+import { catalog } from '../data/catalog'
 export default function Hero() {
+  useLanguage()
+  const hero = catalog.editorial_entries.filter(e => e.section === 'hero')
   return <section className="hero-section" id="studio" aria-labelledby="home-title">
-    <div className="eyebrow-pill"><img src="/images/figma/96c9d.svg" width="12" height="14" alt="" /> MIDNIGHT FREQUENCY • 432 HZ STUDIO ROOM</div>
-    <h1 id="home-title">THE CELESTIAL RECORD STORE</h1>
-    <p className="hero-subtitle">Music from Mark, Stories from Junior<br className="mobile-break" /> • Guided by Jummo under starry skies</p>
-    <div className="hero-labels"><span>ACOUSTIC SESSION</span><i /><span>LATE NIGHT ANALOG TAPE</span><i /><span>BANGKOK • GMMTV ORBIT</span></div>
+    <div className="eyebrow-pill"><img src="/images/figma/96c9d.svg" width="12" height="14" alt="" /> {t("TẦN SỐ NỬA ĐÊM • PHÒNG THU 432 HZ", "MIDNIGHT FREQUENCY • 432 HZ STUDIO ROOM")}</div>
+    <h1 id="home-title">{t("TIỆM ĐĨA GIỮA NHỮNG VÌ SAO", "THE CELESTIAL RECORD STORE")}</h1>
+    <p className="hero-subtitle">{t("Giai điệu từ Mark, câu chuyện từ Junior", "Music from Mark, Stories from Junior")}<br className="mobile-break" /> {t("• Jummo dẫn lối dưới bầu trời sao", "• Guided by Jummo under starry skies")}</p>
+    <div className="hero-labels"><span>{t("PHIÊN NHẠC MỘC", "ACOUSTIC SESSION")}</span><i /><span>{t("BĂNG NHẠC ĐÊM MUỘN", "LATE NIGHT ANALOG TAPE")}</span><i /><span>{t("BANGKOK • QUỸ ĐẠO GMMTV", "BANGKOK • GMMTV ORBIT")}</span></div>
     <div className="hero-photos">
-      <a className="hero-photo gold-photo" href="#/profiles">
-        <img className="photo" src="/images/fan-photos/HNwNJ4GbsAE5PwW.jpg" alt="JuniorMark trong căn phòng với ánh đèn vàng ấm" fetchPriority="high" />
-        <span className="photo-badge"><img src="/images/figma/08e36.svg" alt="" /> THE CELESTIAL DUO</span>
-        <div className="photo-caption"><small>IN OUR WARM LITTLE WORLD</small><h2>Junior & Mark</h2><p>Ánh Dương & Ánh Nguyệt • Voice of Destiny</p></div>
-        <span className="photo-tag">✦ Main Stars</span>
-      </a>
-      <a className="hero-photo blue-photo" href="#/media">
-        <img className="photo" src="/images/fan-photos/HNpnaOZbsAAGFbv.jpg" alt="JuniorMark bên cửa sổ trong bộ ảnh trang phục trắng" fetchPriority="high" />
-        <span className="photo-badge"><img src="/images/figma/cfeb0.svg" alt="" /> STUDIO BACKSTAGE LIFE</span>
-        <div className="photo-caption"><small>COZY MOMENTS & SUNLIGHT</small><h2>Panachai & Jiruntanin</h2><p>Một chút bình yên, một khoảng trời chung</p></div>
-      </a>
+      {hero.map((item,i) => <a className={'hero-photo ' + (i % 2 ? 'blue-photo' : 'gold-photo')} href={i % 2 ? '#/media' : '#/profiles'} key={item.id}>
+        <img className="photo" src={item.image} alt={localize(item.title)} fetchPriority="high" />
+        <span className="photo-badge">{localize(item.tag)}</span>
+        <div className="photo-caption"><small>{localize(item.subtitle)}</small><h2>{localize(item.title)}</h2><p>{localize(item.body)}</p></div>
+      </a>)}
     </div>
   </section>
 }

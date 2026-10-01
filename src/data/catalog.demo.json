@@ -12,9 +12,10 @@
       "label": "CELESTIAL GUARDIAN",
       "color_label": "Sun Gold & Cosmic Blue",
       "role_label": "Sun & Moon Companion",
-      "bio": "Linh vật hướng dương kết nối hai sắc màu của JuniorMark.",
+      "bio": "Jummo là linh vật của JuniorMark thuộc GMMTV Fandom Characters.",
       "stage_description": "Người bạn nhỏ kết nối Ánh Dương & Ánh Nguyệt. Ghé gác xép của Jummo để khám phá lời nhắn và những món quà.",
-      "skills": []
+      "skills": [],
+      "source_url": "https://www.gmm-tv.com/news/4372/"
     },
     {
       "sort_order": 1,
@@ -28,13 +29,16 @@
       "label": "SOLAR EMBER",
       "color_label": "Sun Flare Gold",
       "role_label": "Ánh Dương • Sun",
-      "bio": "Góc hồ sơ Junior: diễn xuất, sân khấu và những câu chuyện trong hành trình JuniorMark.",
+      "bio": "Nghệ sĩ trực thuộc GMMTV. Họ tên và ngày sinh được đối chiếu với hồ sơ nghệ sĩ chính thức.",
       "stage_description": "Khám phá hồ sơ Ánh Dương Panachai và những cột mốc trong hành trình JuniorMark.",
       "skills": [
         "Diễn xuất",
         "Host / MC",
         "Sân khấu"
-      ]
+      ],
+      "full_name_english": "Panachai Sriariyarungruang",
+      "full_name_thai": "ปณชัย ศรีอาริยะรุ่งเรือง",
+      "source_url": "https://www.gmm-tv.com/artists/view/61/"
     },
     {
       "sort_order": 2,
@@ -48,13 +52,16 @@
       "label": "LUNAR MELODY",
       "color_label": "Cosmic Blue",
       "role_label": "Ánh Nguyệt • Moon",
-      "bio": "Góc hồ sơ Mark: vai diễn, giai điệu và những dấu mốc được fandom lưu giữ.",
+      "bio": "Nghệ sĩ trực thuộc GMMTV. Họ tên và ngày sinh được đối chiếu với hồ sơ nghệ sĩ chính thức.",
       "stage_description": "Khám phá hồ sơ Ánh Nguyệt Jiruntanin, góc âm nhạc và những khoảnh khắc được lưu giữ.",
       "skills": [
         "Diễn xuất",
         "Âm nhạc",
         "Acoustic"
-      ]
+      ],
+      "full_name_english": "Jiruntanin Trairattanayon",
+      "full_name_thai": "จิรันธนิน ตรัยรัตนยนต์",
+      "source_url": "https://www.gmm-tv.com/artists/view/82/"
     }
   ],
   "works": [
@@ -133,6 +140,16 @@
       "work_id": "romance",
       "artist_id": "mark",
       "role_name": "Pai"
+    },
+    {
+      "work_id": "fancon",
+      "artist_id": "junior",
+      "role_name": "Performer"
+    },
+    {
+      "work_id": "fancon",
+      "artist_id": "mark",
+      "role_name": "Performer"
     }
   ],
   "media_items": [
@@ -489,31 +506,40 @@
   ],
   "tracks": [
     {
-      "sort_order": 0,
+      "id": "playlist-1",
+      "title": "อย่าน่ารักเกิน (Cutie Overload)",
+      "subtitle": "Junior Panachai, Mark Jiruntanin",
+      "audio_url": "/audio/ytmp3free.cc_cutie-overload-junior-panachai-mark-jiruntanin-youtubemp3free.org.mp3",
+      "kind": "playlist",
       "status": "published",
-      "id": "track-1",
-      "title": "Warm Whisper",
-      "subtitle": "Cherry Magic • Acoustic mood",
-      "audio_url": null,
-      "kind": "playlist"
+      "sort_order": 0
     },
     {
-      "sort_order": 1,
+      "id": "playlist-2",
+      "title": "วางใจ (Trust Me)",
+      "subtitle": "Junior Panachai, Mark Jiruntanin",
+      "audio_url": "/audio/ytmp3free.cc_trust-me-ostmy-romance-scammer-junior-panachai-mark-jiruntanin-youtubemp3free.org.mp3",
+      "kind": "playlist",
       "status": "published",
-      "id": "track-2",
-      "title": "Acoustic Starlight",
-      "subtitle": "Midnight Session",
-      "audio_url": null,
-      "kind": "playlist"
+      "sort_order": 1
     },
     {
-      "sort_order": 2,
+      "id": "playlist-3",
+      "title": "ให้ได้รัก (Let Me Love You)",
+      "subtitle": "Junior Panachai",
+      "audio_url": "/audio/ytmp3free.cc_let-me-love-you-ostmy-romance-scammer-junior-panachai-youtubemp3free.org.mp3",
+      "kind": "playlist",
       "status": "published",
-      "id": "track-3",
-      "title": "Our Sunnymoon",
-      "subtitle": "Acoustic Live",
-      "audio_url": null,
-      "kind": "playlist"
+      "sort_order": 2
+    },
+    {
+      "id": "playlist-4",
+      "title": "No One Else",
+      "subtitle": "Perth Tanapon, Santa Pongsapak",
+      "audio_url": "/audio/ytmp3free.cc_no-one-else-ost-perfect-10-liners-perth-tanapon-santa-pongsapak-youtubemp3free.org.mp3",
+      "kind": "playlist",
+      "status": "published",
+      "sort_order": 3
     }
   ],
   "events": [
@@ -689,6 +715,28 @@
       "section": "letter",
       "title": "Gửi các vì sao thân yêu",
       "body": "Gửi các vì sao thân yêu,\nMột ngày dù bận rộn đến đâu, mong bạn vẫn giữ cho mình một khoảng bình yên. Cảm ơn bạn đã mang âm nhạc và nụ cười đến góc nhỏ này.\n— Lời nhắn biên tập của fansite, không phải thư thật của nghệ sĩ."
+    },
+    {
+      "id": "hero-duo",
+      "title": "Junior & Mark",
+      "body": "Ánh Dương & Ánh Nguyệt • Voice of Destiny",
+      "image": "/images/fan-photos/HNwNJ4GbsAE5PwW.jpg",
+      "subtitle": "IN OUR WARM LITTLE WORLD",
+      "tag": "THE CELESTIAL DUO",
+      "section": "hero",
+      "sort_order": 0,
+      "status": "published"
+    },
+    {
+      "id": "hero-studio",
+      "title": "Panachai & Jiruntanin",
+      "body": "Một chút bình yên, một khoảng trời chung",
+      "image": "/images/fan-photos/HNpnaOZbsAAGFbv.jpg",
+      "subtitle": "COZY MOMENTS & SUNLIGHT",
+      "tag": "STUDIO BACKSTAGE LIFE",
+      "section": "hero",
+      "sort_order": 1,
+      "status": "published"
     }
   ],
   "glossary": [
@@ -862,6 +910,38 @@
       "body": "Gửi các vì sao thân yêu,\nMột ngày dù bận rộn đến đâu, mong bạn vẫn giữ cho mình một khoảng bình yên. Cảm ơn bạn đã mang âm nhạc và nụ cười đến góc nhỏ này.\n— Lời nhắn biên tập của fansite, không phải thư thật của nghệ sĩ.",
       "status": "published",
       "sort_order": 0
+    }
+  ],
+  "artist_social_links": [
+    {
+      "artist_id": "junior",
+      "platform": "instagram",
+      "url": "https://www.instagram.com/junniorrs/"
+    },
+    {
+      "artist_id": "junior",
+      "platform": "twitter",
+      "url": "https://twitter.com/jnnrrs"
+    },
+    {
+      "artist_id": "junior",
+      "platform": "tiktok",
+      "url": "https://www.tiktok.com/@jnnrrs"
+    },
+    {
+      "artist_id": "mark",
+      "platform": "instagram",
+      "url": "https://www.instagram.com/markjrtn/"
+    },
+    {
+      "artist_id": "mark",
+      "platform": "twitter",
+      "url": "https://twitter.com/markjrtn"
+    },
+    {
+      "artist_id": "mark",
+      "platform": "tiktok",
+      "url": "https://www.tiktok.com/@markjrtn"
     }
   ]
 }

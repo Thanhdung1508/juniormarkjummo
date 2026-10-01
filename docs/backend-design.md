@@ -2,7 +2,7 @@
 
 ## Trạng thái thực hiện
 
-Đã tạo database PostgreSQL local **juniormark** tại **127.0.0.1:55432**, có 24 bảng public và 3 bảng private. Đã áp dụng migrations 001–005 và seed, bổ sung các mục còn thiếu từ Word: thông tin hồ sơ, social links, quẻ hằng ngày và phần thưởng Jummo. Xem [hướng dẫn kết nối](database-guide.md) và [danh mục trường](database-fields.md).
+Đã tạo database PostgreSQL local **juniormark** tại **127.0.0.1:55432**, có 27 bảng public và 3 bảng private. Đã áp dụng migrations 001–005 và seed, bổ sung các mục còn thiếu từ Word: thông tin hồ sơ, social links, quẻ hằng ngày và phần thưởng Jummo. Xem [hướng dẫn kết nối](database-guide.md) và [danh mục trường](database-fields.md).
 
 `npm run db:seed` tạo lại seed từ snapshot, không ghi đè nội dung đã chỉnh sửa; `npm run db:bundle` gộp bộ SQL cài mới cho Supabase thành `supabase/setup.sql`. `npm run test:db` có 38 kiểm tra đã qua. Auth/Storage local chỉ là schema tương thích; chưa chạy dịch vụ Supabase thật và chưa áp dụng migration lên cloud.
 
@@ -48,3 +48,8 @@ Giữ migration 001/002 để tương thích bản trước. Migration 003 bổ 
 Chạy migration/seed trên PostgreSQL PGlite với auth/storage stub riêng cho test; kiểm tra RLS bằng SET ROLE và JWT sub. Đây không phải kiểm thử Supabase Auth/Storage qua mạng. Chưa có .env.local; chưa thay đổi cloud database.
 
 Tham khảo: [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security), [Database functions](https://supabase.com/docs/guides/database/functions), [Storage policies](https://supabase.com/docs/guides/storage/security/access-control).
+
+
+## Cập nhật tài khoản ngày 22/09/2026
+
+Đã áp dụng thêm `003_archive_items.sql` và `006_account_features.sql`. Trang `#/account` có hồ sơ, cài đặt, quyền riêng tư, nơi lưu trữ và ghi chú. Xem [account-features.md](account-features.md) để cấu hình Supabase và biết giới hạn kiểm thử. Catalog các trang nội dung vẫn chưa được nối toàn bộ.

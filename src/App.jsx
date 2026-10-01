@@ -1,7 +1,12 @@
-import { useState } from 'react'
+import { t, useLanguage, localize } from './i18n/language'
+import { useEffect, useState } from 'react'
+import AccountPage from './features/account/AccountPage'
+import PasswordForm from './features/auth/PasswordForm'
+import SaveToOrbit from './components/SaveToOrbit'
 import { ArrowUpRight, Heart, LoaderCircle, LogOut, Orbit } from 'lucide-react'
 import Header from './components/Header'
 import Hero from './components/Hero'
+import ArchiveDashboard from './components/ArchiveDashboard'
 import RecordPlayer from './components/RecordPlayer'
 import Birthdays from './components/Birthdays'
 import Jummo from './components/Jummo'
@@ -23,8 +28,14 @@ import Schedule from './pages/Schedule'
 import Community from './pages/Community'
 import JummoWorld from './pages/JummoWorld'
 import Projects from './pages/Projects'
+import MyOrbit from './pages/MyOrbit'
+import OrbitProvider from './features/orbit/OrbitProvider'
+import JummoCompanion from './components/JummoCompanion'
+import './styles/glass.css'
+import './styles/rhythm.css'
 
-function HomePage() {
+function HomePage({ setPlayerSlot }) {
+  useLanguage()
   const auth = useAuth()
   const route = useRoute()
   const [dialog, setDialog] = useState(null)
@@ -32,9 +43,11 @@ function HomePage() {
   const [logoutError, setLogoutError] = useState('')
   const openAuth = (mode) => setDialog({ type: 'auth', mode })
   const openAccount = () => {
-    setLogoutError('')
-    setDialog({ type: 'account' })
+    location.hash = '/account'
   }
+  useEffect(() => {
+    try { document.documentElement.dataset.reduceMotion = localStorage.getItem('jm-reduce-motion') === 'true' ? 'true' : 'false' } catch { /* Cài đặt vẫn dùng được trong phiên. */ }
+  }, [])
   const close = () => setDialog(null)
   const openPhoto = (photo) => setDialog({ type: 'photo', ...photo })
   const showInfo = (title, body) => setDialog({ type: 'info', title, body })
@@ -63,20 +76,22 @@ function HomePage() {
           main?.scrollIntoView()
         }}
       >
-        Đi đến nội dung chính
+        {t("Đi đến nội dung chính", "Skip to main content")}
       </a>
-      <Header auth={auth} openAuth={openAuth} openAccount={openAccount} route={route} />
+      <Header auth={auth} openAuth={openAuth} route={route} />
       {/* 1. Các khối trang chủ theo thứ tự frame Studio Home trong Figma. */}
-      <main className="page-content" id="main" tabIndex={-1}>
+      <main className={`page-content mode-${['studio', 'timeline', 'profiles', 'jummo', 'sky'].includes(route) ? 'immersive' : route.startsWith('profiles/') || route === 'media' ? 'editorial' : 'utility'}`} id="main" tabIndex={-1}>
+      <JummoCompanion route={route} />
         {route === 'studio' ? (
           <>
             <Hero />
-            <RecordPlayer />
+            <ArchiveDashboard />
+            <div id="record-player" ref={setPlayerSlot} />
             <Birthdays />
             <Jummo />
             <Highlights openStory={(story) => setDialog({ type: 'story', ...story })} />
             <Gallery openPhoto={(photo) => setDialog({ type: 'photo', ...photo })} />
-            <section className="explore-grid" aria-label="Khám phá cộng đồng">
+            <section className="explore-grid" aria-label={t("Khám phá cộng đồng", "Explore the community")}>
               <button
                 className="explore-card"
                 onClick={() => {
@@ -85,12 +100,12 @@ function HomePage() {
               >
                 <div>
                   <Orbit size={22} />
-                  <span className="eyebrow">OUR JOURNEY</span>
+                  <span className="eyebrow">{t("HÀNH TRÌNH CỦA CHÚNG MÌNH", "OUR JOURNEY")}</span>
                 </div>
-                <h2>Constellation Timeline</h2>
-                <p>Những vai diễn, những dấu mốc, một hành trình được lưu lại bằng yêu thương.</p>
+                <h2>{t("Dòng thời gian tinh tú", "Constellation Timeline")}</h2>
+                <p>{t("Những vai diễn, những dấu mốc, một hành trình được lưu lại bằng yêu thương.", "Roles, milestones, and a journey preserved with love.")}</p>
                 <strong>
-                  Khám phá chòm sao kỷ niệm <ArrowUpRight size={16} />
+                  {t("Khám phá chòm sao kỷ niệm", "Explore the constellation of memories")} <ArrowUpRight size={16} />
                 </strong>
               </button>
               <button
@@ -101,14 +116,14 @@ function HomePage() {
               >
                 <div>
                   <Heart size={22} />
-                  <span className="eyebrow">FAN MELODIES</span>
+                  <span className="eyebrow">{t("GIAI ĐIỆU NGƯỜI HÂM MỘ", "FAN MELODIES")}</span>
                 </div>
-                <h2>Wall of Melody</h2>
+                <h2>{t("Bức tường giai điệu", "Wall of Melody")}</h2>
                 <p>
-                  Mỗi người hâm mộ là một nốt nhạc. Cùng trở thành một phần của tiệm đĩa JuniorMark.
+                  {t("Mỗi người hâm mộ là một nốt nhạc. Cùng trở thành một phần của tiệm đĩa JuniorMark.", "Every fan is a musical note. Become part of the JuniorMark record store.")}
                 </p>
                 <strong>
-                  Gắn nốt nhạc của bạn <ArrowUpRight size={16} />
+                  {t("Gắn nốt nhạc của bạn", "Leave your musical note")} <ArrowUpRight size={16} />
                 </strong>
               </button>
             </section>
@@ -131,31 +146,41 @@ function HomePage() {
             key={route}
             kind={route === 'sky' ? 'star' : 'note'}
             openAuth={openAuth}
-            showInfo={showInfo}
           />
         ) : route === 'jummo' ? (
           <JummoWorld openPhoto={openPhoto} showInfo={showInfo} />
+        ) : route === 'account' ? (
+          <AccountPage openAuth={openAuth} />
+        ) : route === 'orbit' ? (
+          <MyOrbit openAuth={openAuth} openAccount={openAccount} />
         ) : route === 'projects' ? (
           <Projects showInfo={showInfo} />
         ) : (
           <section className="archive-panel">
-            <h1>Chưa tìm thấy trang này</h1>
-            <a href="#/studio">Về Studio</a>
+            <h1>{t("Chưa tìm thấy trang này", "Page not found")}</h1>
+            <a href="#/studio">{t("Về phòng thu", "Back to Studio")}</a>
           </section>
         )}
       </main>
       <Footer />
+      {!['account','orbit'].includes(route) && <div className="account-actions" style={{justifyContent:'center',marginBottom:24}}><SaveToOrbit kind="page" id={route} payload={{title:document.title+' · '+route,url:'#/'+route}}/><a className="text-button" href="#/account">{t("Góc cá nhân ↗", "Your corner ↗")}</a></div>}
+      {auth.passwordMessage && <p className="notice" role="status">{localize(auth.passwordMessage)}</p>}
+      {auth.recoveryOpen && <Dialog title={t("Khôi phục mật khẩu", "Reset password")} onClose={auth.dismissRecovery}><PasswordForm auth={auth}/></Dialog>}
       {dialog?.type === 'info' && (
-        <Dialog title={dialog.title} onClose={close}>
-          <p style={{ whiteSpace: 'pre-line' }}>{dialog.body}</p>
+        <Dialog title={localize(dialog.title)} onClose={close}>
+          <p style={{ whiteSpace: 'pre-line' }}>{localize(dialog.body)}</p>
         </Dialog>
       )}
       {/* 2. Các hộp thoại dùng chung cơ chế focus, Escape và nền che. */}
       {dialog?.type === 'auth' && <AuthDialog mode={dialog.mode} auth={auth} onClose={close} />}
       {dialog?.type === 'photo' && (
-        <Dialog title={dialog.title} onClose={close} className="photo-dialog">
-          <img className="lightbox-image" src={dialog.src} alt={dialog.alt} />
-          <p className="muted">{dialog.credit}</p>
+        <Dialog title={localize(dialog.title)} onClose={close} className="photo-dialog">
+          <img className="lightbox-image" src={dialog.src} alt={localize(dialog.alt)} />
+          <p className="muted">{localize(dialog.credit)}</p>
+          <SaveToOrbit kind="photo" id={dialog.file || dialog.src} payload={{title:dialog.title,url:dialog.src,credit:dialog.credit}}/>
+          {dialog.memoryId && <a className="text-button" href={`#/timeline?era=${dialog.era}&memory=${dialog.memoryId}`} onClick={close}>{t("Khám phá kỷ niệm liên quan ↗", "Explore related memory ↗")}</a>}
+          {dialog.era && <a className="text-button" href={`#/media?era=${dialog.era}`} onClick={close}>{t("Khám phá giai đoạn liên quan ↗", "Explore editorial era ↗")}</a>}
+          {dialog.person && dialog.person !== 'jummo' && <a className="text-button" href={`#/profiles/${dialog.person}`} onClick={close}>{t("Khám phá hồ sơ ↗", "Explore profile ↗")}</a>}
           {dialog.source && (
             <a
               className="text-button photo-credit-link"
@@ -163,55 +188,28 @@ function HomePage() {
               target="_blank"
               rel="noreferrer"
             >
-              Xem bài đăng gốc ↗
+              {t("Xem bài đăng gốc ↗", "View original post ↗")}
             </a>
           )}
         </Dialog>
       )}
       {dialog?.type === 'story' && (
-        <Dialog title={dialog.title} onClose={close}>
-          <img className="story-dialog-image" src={dialog.image} alt="Ảnh minh họa bộ sưu tập" />
-          <p>{dialog.detail}</p>
+        <Dialog title={localize(dialog.title)} onClose={close}>
+          <img className="story-dialog-image" src={dialog.image} alt={t("Ảnh minh họa bộ sưu tập", "Collection illustration")} />
+          <p>{localize(dialog.detail)}</p>
+          <SaveToOrbit kind="page" id={'story:'+dialog.title} payload={{title:dialog.title,url:'#/studio',excerpt:dialog.detail}}/>
           <a
             className="primary-button"
             href="https://www.youtube.com/@gmmtv"
             target="_blank"
             rel="noreferrer"
           >
-            Ghé kênh GMMTV <ArrowUpRight size={16} />
+            {t("Ghé kênh GMMTV", "Visit GMMTV")} <ArrowUpRight size={16} />
           </a>
         </Dialog>
       )}
-      {dialog?.type === 'journey' && (
-        <Dialog title="Chòm sao kỷ niệm" onClose={close}>
-          <p className="dialog-intro">Ba dấu mốc trong góc lưu trữ JuniorMark.</p>
-          <ol className="journey-list">
-            <li>
-              <span>01</span>
-              <div>
-                <h3>Cherry Magic</h3>
-                <p>Jinta & Min — khởi đầu một hành trình.</p>
-              </div>
-            </li>
-            <li>
-              <span>02</span>
-              <div>
-                <h3>Perfect 10 Liners</h3>
-                <p>Faifa & Wine — thêm một chương đáng nhớ.</p>
-              </div>
-            </li>
-            <li>
-              <span>03</span>
-              <div>
-                <h3>My Romance Scammer</h3>
-                <p>Tim & Pai — tiếp nối những câu chuyện.</p>
-              </div>
-            </li>
-          </ol>
-        </Dialog>
-      )}
       {dialog?.type === 'account' && (
-        <Dialog title="Góc nhỏ của bạn" onClose={logoutBusy ? () => {} : close}>
+        <Dialog title={t("Góc nhỏ của bạn", "Your little corner")} onClose={logoutBusy ? () => {} : close}>
           {auth.session ? (
             <>
               <div className="account-avatar">
@@ -226,18 +224,18 @@ function HomePage() {
               <h3 className="account-name">
                 {auth.profile?.display_name ||
                   auth.session.user.user_metadata?.display_name ||
-                  'Bạn yêu của Jummo'}
+                  t('Bạn yêu của Jummo', 'Jummo’s dear friend')}
               </h3>
               <p className="account-email">{auth.session.user.email}</p>
-              <p className="dialog-intro">Chào mừng bạn đến với tiệm đĩa JuniorMark.</p>
+              <p className="dialog-intro">{t("Chào mừng bạn đến với tiệm đĩa JuniorMark.", "Welcome to the JuniorMark record store.")}</p>
               {auth.profileError && (
                 <p className="notice" role="status">
-                  {auth.profileError}
+                  {localize(auth.profileError)}
                 </p>
               )}
               {logoutError && (
                 <p className="error-message" role="alert">
-                  {logoutError}
+                  {localize(logoutError)}
                 </p>
               )}
               <button
@@ -246,11 +244,11 @@ function HomePage() {
                 onClick={logout}
               >
                 {logoutBusy ? <LoaderCircle className="spin" size={17} /> : <LogOut size={17} />}
-                {logoutBusy ? 'Đang đăng xuất…' : 'Đăng xuất'}
+                {logoutBusy ? t('Đang đăng xuất…', 'Signing out…') : t('Đăng xuất', 'Sign out')}
               </button>
             </>
           ) : (
-            <p>Bạn đã đăng xuất. Hẹn gặp lại ở tiệm đĩa!</p>
+            <p>{t("Bạn đã đăng xuất. Hẹn gặp lại ở tiệm đĩa!", "You are signed out. See you at the record store!")}</p>
           )}
         </Dialog>
       )}
@@ -259,9 +257,14 @@ function HomePage() {
 }
 
 export default function App() {
+  useLanguage()
+  const [playerSlot, setPlayerSlot] = useState(null)
   return (
     <AuthProvider>
-      <HomePage />
+      <OrbitProvider>
+      <HomePage setPlayerSlot={setPlayerSlot} />
+      <RecordPlayer heroTarget={playerSlot} />
+      </OrbitProvider>
     </AuthProvider>
   )
 }

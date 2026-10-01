@@ -47,9 +47,11 @@ try {
   for (const file of [
     '001_fan_profiles.sql',
     '002_fan_messages.sql',
+    '003_archive_items.sql',
     '003_content_catalog.sql',
     '004_community_and_storage.sql',
     '005_document_features.sql',
+    '006_account_features.sql',
     'seed.sql',
   ]) {
     await db.exec(await readFile(new URL(`../supabase/${file}`, import.meta.url), 'utf8'))
@@ -140,6 +142,54 @@ try {
   await db.exec(
     `insert into public.media_bookmarks values('${fanA}','photo-01'); insert into public.user_checklist(user_id,item_id) values('${fanA}','check-1'); insert into public.fan_progress(user_id,kind,data) values('${fanA}','quiz','{"result":"jummo"}')`,
   )
+  await asRole('authenticated', fanB)
+  equal(
+    await scalar('select count(*)::int from public.user_notes'),
+    0,
+    'notes hidden from other accounts',
+  )
+  await denied(
+    `insert into public.user_notes(user_id,title,body) values('${fanA}','Intruder','no')`,
+  )
+  await asRole('authenticated', fanA)
+  await db.exec(
+    `insert into public.user_notes(user_id,title,body) values('${fanA}','Private note','Only me')`,
+  )
+  await db.exec(
+    `insert into public.archive_items(user_id,kind,item_id,payload) values('${fanA}','photo','photo-01','{"title":"Saved photo"}')`,
+  )
+  await db.exec(
+    `insert into public.user_settings(user_id,show_country) values('${fanA}',true) on conflict(user_id) do update set user_id=excluded.user_id,show_country=excluded.show_country`,
+  )
+  await db.exec(
+    `insert into public.user_settings(user_id,show_country) values('${fanA}',false) on conflict(user_id) do update set user_id=excluded.user_id,show_country=excluded.show_country`,
+  )
+  equal(
+    (await scalar('select public.export_my_data()')).user_notes.length,
+    1,
+    'owner can export own note',
+  )
+  await asRole('authenticated', fanB)
+  equal(
+    await scalar('select count(*)::int from public.user_notes'),
+    0,
+    'existing notes remain private',
+  )
+  equal(await scalar('select count(*)::int from public.archive_items'), 0, 'saved photos private')
+  equal(
+    (await scalar('select public.export_my_data()')).user_notes.length,
+    0,
+    'export does not leak another account',
+  )
+  await db.exec("update public.user_notes set body='Changed by other account'")
+  await asRole('authenticated', fanA)
+  equal(await scalar('select body from public.user_notes'), 'Only me', 'note update isolated')
+  equal(
+    await scalar("select country from public.fan_messages where body='Hello'"),
+    'GLOBAL',
+    'default hides country server-side',
+  )
+  await denied(`insert into public.user_notes(user_id,title,body) values('${fanA}',' ', 'invalid')`)
   await asRole('authenticated', fanB)
   equal(
     await scalar('select count(*)::int from public.jummo_daily_logs'),

@@ -7,22 +7,22 @@ it('chọn người, Discover mở đúng modal, đổi tab không đổi ngư�
   const user = userEvent.setup()
   render(<CharacterStage />)
   await user.click(screen.getByRole('button', { name: 'Chọn Junior Panachai', exact: true }))
-  await user.click(screen.getByRole('button', { name: 'Discover Junior Panachai' }))
-  const modal = screen.getByRole('dialog', { name: 'Celestial File • Junior Panachai' })
+  await user.click(screen.getByRole('button', { name: 'Khám phá Junior Panachai' }))
+  const modal = screen.getByRole('dialog', { name: 'Hồ sơ tinh tú • Junior Panachai' })
   expect(modal).toBeInTheDocument()
-  await user.click(within(modal).getByRole('tab', { name: 'Filmography' }))
+  await user.click(within(modal).getByRole('tab', { name: 'Vai diễn' }))
   expect(within(modal).getByText('Jinta')).toBeInTheDocument()
   await user.keyboard('{ArrowRight}')
-  expect(within(modal).getByRole('tab', { name: 'Discography' })).toHaveAttribute(
+  expect(within(modal).getByRole('tab', { name: 'Bản thu' })).toHaveAttribute(
     'aria-selected',
     'true',
   )
-  expect(within(modal).getByText('Discography & Audio Archive')).toBeInTheDocument()
+  expect(within(modal).getByText('Danh Sách Bản Thu Và Kho Âm Thanh')).toBeInTheDocument()
   await user.click(within(modal).getByRole('button', { name: 'Đóng', exact: true }))
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   expect(screen.getByRole('button', { name: 'Chọn Junior Panachai', exact: true })).toHaveAttribute(
     'aria-pressed',
     'true',
   )
-  expect(screen.getByRole('button', { name: 'Discover Junior Panachai' })).toHaveFocus()
+  expect(screen.getByRole('button', { name: 'Khám phá Junior Panachai' })).toHaveFocus()
 })

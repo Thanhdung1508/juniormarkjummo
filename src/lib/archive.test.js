@@ -2,6 +2,11 @@ import { describe, expect, it } from 'vitest'
 import { filterPhotos, calendarCells, eventCalendar, validateMessage, quizResult } from './archive'
 
 describe('bộ lọc và lịch', () => {
+  it('tìm tên ảnh đã dịch bằng tiếng Việt không dấu, vẫn giữ được tên gốc', () => {
+    const items = [{ title: 'Our Little Sunshine' }]
+    expect(filterPhotos(items, { query: 'mat troi nho' })).toEqual(items)
+    expect(filterPhotos(items, { query: 'sunshine' })).toEqual(items)
+  })
   it('quiz chọn đúng nhóm đa số, hòa điểm trả Jummo', () => {
     expect(quizResult([0, 0, 0])).toBe(0)
     expect(quizResult([1, 1, 1])).toBe(1)

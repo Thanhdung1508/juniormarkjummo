@@ -1,89 +1,98 @@
+import { t as tr, useLanguage, localize } from '../i18n/language'
+import { catalog } from '../data/catalog'
+import { photoPath } from '../data/memories'
 import { useState } from 'react'
 import { calendarCells, downloadText, eventCalendar } from '../lib/archive'
 import { Chips, Empty, PageIntro, Tip } from './shared'
+import SaveToOrbit from '../components/SaveToOrbit'
 
 // Lịch minh họa tách riêng; không dẫn tới mua vé hoặc ghi danh giả.
-const examples = [
-  {
-    id: 'acoustic',
-    date: '2026-06-15',
-    title: 'Birthday Acoustic Night • Starlit Echoes',
-    category: 'fancon',
-    demo: true,
-    image: 'HLt1Jy5bcAAdFxD.jpg',
-  },
-  {
-    id: 'press',
-    date: '2026-09-15',
-    title: 'My Romance Scammer • Press Conference',
-    category: 'press',
-    demo: true,
-    image: 'HNwNJ4GbsAE5PwW.jpg',
-  },
-  {
-    id: 'gathering',
-    date: '2026-10-23',
-    title: 'Sunflowers for You • Birthday Gathering',
-    category: 'fancon',
-    demo: true,
-    image: 'HNr2eA_aUAAAesn.jpg',
-  },
-]
+const examples = catalog.events
+  .filter((e) => e.event_status !== 'cancelled')
+  .map((e) => ({
+    ...e,
+    date: new Intl.DateTimeFormat('en-CA', {
+      timeZone: e.timezone || 'Asia/Ho_Chi_Minh',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    }).format(new Date(e.starts_at)),
+    demo: e.is_demo,
+  }))
 export default function Schedule({ showInfo }) {
+  useLanguage()
   const now = new Date(),
     [year, setYear] = useState(now.getFullYear()),
     [month, setMonth] = useState(now.getMonth()),
-    [view, setView] = useState('list'),
+    [view, setView] = useState(() =>
+      window.matchMedia?.('(max-width: 640px)').matches ? 'agenda' : 'list',
+    ),
     [category, setCategory] = useState('all'),
     [demo, setDemo] = useState(false)
-  const birthdays = [
-    {
-      id: 'junior',
-      date: `${year}-10-23`,
-      title: 'Sinh nhật Junior Panachai',
+  const birthdays = catalog.artists
+    .filter((a) => a.birthday)
+    .map((a) => ({
+      id: a.id,
+      date: year + a.birthday.slice(4, 10),
+      title: tr('Sinh nhật ', 'Birthday · ') + a.name,
       category: 'birthday',
-      description: 'Ngày sinh nhật, không phải lịch fanmeeting.',
-      image: 'HNr2eA_aUAAAesn.jpg',
-    },
-    {
-      id: 'mark',
-      date: `${year}-06-15`,
-      title: 'Sinh nhật Mark Jiruntanin',
-      category: 'birthday',
-      description: 'Ngày sinh nhật, không phải lịch fanmeeting.',
-      image: 'HLt1Jy5bcAAdFxD.jpg',
-    },
-  ]
-  const events = [...birthdays, ...(demo ? examples : [])]
+      description: tr(
+        'Ngày sinh nhật, không phải lịch fanmeeting.',
+        'Birthday reminder, not a fan meeting schedule.',
+      ),
+      image: a.portrait_image,
+    }))
+  const events = [...birthdays, ...examples.filter((e) => demo || !e.demo)]
     .filter(
       (e) => (category === 'all' || e.category === category) && Number(e.date.slice(0, 4)) === year,
     )
     .sort((a, b) => a.date.localeCompare(b.date))
   function shift(n) {
+    if (view === 'agenda') {
+      setYear((current) => current + n)
+      return
+    }
     const d = new Date(year, month + n, 1)
     setYear(d.getFullYear())
     setMonth(d.getMonth())
   }
   function save(list) {
-    downloadText('juniormark-calendar.ics', eventCalendar(list), 'text/calendar;charset=utf-8')
+    downloadText(
+      'juniormark-calendar.ics',
+      eventCalendar(
+        list.map((event) => ({
+          ...event,
+          title: localize(event.title),
+          description: localize(event.description),
+        })),
+      ),
+      'text/calendar;charset=utf-8',
+    )
   }
   return (
     <>
       <PageIntro
-        eyebrow="ORBIT CALENDAR • GMT+7"
-        title="Lịch Trình Tinh Tú • JuniorMark"
-        description="Theo dõi những ngày đặc biệt và lưu vào lịch cá nhân."
+        eyebrow={tr('LỊCH QUỸ ĐẠO • GMT+7', 'ORBIT CALENDAR • GMT+7')}
+        title={tr('Lịch Trình Tinh Tú • JuniorMark', 'Celestial Schedule • JuniorMark')}
+        description={tr(
+          'Theo dõi những ngày đặc biệt và lưu vào lịch cá nhân.',
+          'Follow special dates and save them to your personal calendar.',
+        )}
       >
         <div className="toolbar">
           <button className="primary-button" onClick={() => save(events)} disabled={!events.length}>
-            Tải file .ICS ↓
+            {' '}
+            {tr('Tải file .ICS ↓', 'Download .ICS file ↓')}{' '}
           </button>
           <button
             className="secondary-button"
             onClick={() =>
               showInfo(
-                'Đồng bộ lịch',
-                'Tải file .ICS rồi nhập vào Google Calendar hoặc Apple Calendar. Đây là bản nhập một lần, chưa phải lịch tự đồng bộ.',
+                tr('Đồng bộ lịch', 'Calendar sync'),
+                tr(
+                  'Tải file .ICS rồi nhập vào Google Calendar hoặc Apple Calendar. Đây là bản nhập một lần, chưa phải lịch tự đồng bộ.',
+                  'Download the .ICS file and import it into Google Calendar or Apple Calendar. This is a one-time import, not automatic synchronization.',
+                ),
               )
             }
           >
@@ -92,43 +101,63 @@ export default function Schedule({ showInfo }) {
         </div>
       </PageIntro>
       <Tip>
-        Ngày sinh nhật luôn có sẵn. Bật “Xem lịch minh họa” để xem các thẻ sự kiện trong mẫu thiết
-        kế; đây không phải lịch đã xác nhận.
+        {' '}
+        {tr(
+          'Ngày sinh nhật luôn có sẵn. Bật “Xem lịch minh họa” để xem các thẻ sự kiện trong mẫu thiết kế; đây không phải lịch đã xác nhận.',
+          'Birthdays are always available. Enable the sample calendar to see design examples; these are not confirmed events.',
+        )}{' '}
       </Tip>
       <label className="demo-switch">
-        <input type="checkbox" checked={demo} onChange={(e) => setDemo(e.target.checked)} /> Xem
-        lịch minh họa thiết kế
+        <input type="checkbox" checked={demo} onChange={(e) => setDemo(e.target.checked)} />{' '}
+        {tr('Xem lịch minh họa thiết kế', 'Show sample design calendar')}{' '}
       </label>
       <div className="archive-panel toolbar">
         <Chips
-          label="Kiểu xem lịch"
+          label={tr('Kiểu xem lịch', 'Calendar view')}
           value={view}
           onChange={setView}
           options={[
-            ['list', 'Dòng thời gian'],
-            ['month', 'Lịch tháng'],
+            ['agenda', tr('Danh sách ngày', 'Agenda')],
+            ['list', tr('Dòng thời gian', 'Timeline')],
+            ['month', tr('Lịch tháng', 'Monthly calendar')],
           ]}
         />
         <Chips
-          label="Loại sự kiện"
+          label={tr('Loại sự kiện', 'Event type')}
           value={category}
           onChange={setCategory}
           options={[
-            ['all', 'Tất cả'],
-            ['birthday', 'Sinh nhật'],
-            ['fancon', 'Fan Meeting • Concert'],
-            ['press', 'Phim / Press'],
+            ['all', tr('Tất cả', 'All')],
+            ['birthday', tr('Sinh nhật', 'Birthday')],
+            ['fancon', tr('Gặp Gỡ Người Hâm Mộ • Hòa Nhạc', 'Fan Meeting • Concert')],
+            ['press', tr('Phim / Họp báo', 'Film / Press')],
           ]}
         />
       </div>
       <div className="toolbar month-toolbar">
-        <button className="icon-button" aria-label="Tháng trước" onClick={() => shift(-1)}>
+        <button
+          className="icon-button"
+          aria-label={
+            view === 'agenda'
+              ? tr('Năm trước', 'Previous year')
+              : tr('Tháng trước', 'Previous month')
+          }
+          onClick={() => shift(-1)}
+        >
           ←
         </button>
         <h2>
-          Tháng {month + 1}, {year}
+          {view === 'agenda'
+            ? `${tr('Danh sách ngày', 'Agenda')} · ${year}`
+            : tr(`Tháng ${month + 1}, ${year}`, `Month ${month + 1}, ${year}`)}
         </h2>
-        <button className="icon-button" aria-label="Tháng sau" onClick={() => shift(1)}>
+        <button
+          className="icon-button"
+          aria-label={
+            view === 'agenda' ? tr('Năm sau', 'Next year') : tr('Tháng sau', 'Next month')
+          }
+          onClick={() => shift(1)}
+        >
           →
         </button>
         <button
@@ -138,14 +167,30 @@ export default function Schedule({ showInfo }) {
             setMonth(now.getMonth())
           }}
         >
-          Hôm nay
+          {' '}
+          {tr('Hôm nay', 'Today')}{' '}
         </button>
       </div>
-      {view === 'month' ? (
-        <div className="month-grid" aria-label={`Lịch tháng ${month + 1}/${year}`}>
-          {['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'].map((d) => (
-            <b key={d}>{d}</b>
+      {view === 'agenda' && (
+        <nav className="date-rail" aria-label={tr('Các ngày trong danh sách', 'Agenda dates')}>
+          {events.map((event) => (
+            <a key={event.id} href={`#/schedule?section=event-${event.id}`}>
+              {event.date.slice(5)} ·{' '}
+              {event.demo ? tr('MINH HỌA', 'DEMO') : tr('Sinh nhật', 'Birthday')}
+            </a>
           ))}
+        </nav>
+      )}
+      {view === 'month' ? (
+        <div
+          className="month-grid"
+          aria-label={tr(`Lịch tháng ${month + 1}/${year}`, `Calendar for ${month + 1}/${year}`)}
+        >
+          {tr('T2,T3,T4,T5,T6,T7,CN', 'Mon,Tue,Wed,Thu,Fri,Sat,Sun')
+            .split(',')
+            .map((d) => (
+              <b key={d}>{d}</b>
+            ))}
           {calendarCells(year, month).map((day, i) => (
             <div key={i} className={!day ? 'blank-day' : ''}>
               {day && (
@@ -162,15 +207,18 @@ export default function Schedule({ showInfo }) {
                         key={e.id}
                         onClick={() =>
                           showInfo(
-                            e.title,
+                            localize(e.title),
                             e.demo
-                              ? 'Sự kiện minh họa thiết kế, chưa có thông báo chính thức.'
-                              : e.description,
+                              ? tr(
+                                  'Sự kiện minh họa thiết kế, chưa có thông báo chính thức.',
+                                  'Sample design event without an official announcement.',
+                                )
+                              : localize(e.description),
                           )
                         }
                       >
-                        {e.demo ? 'Mẫu · ' : ''}
-                        {e.title}
+                        {e.demo ? tr('Mẫu · ', 'Sample · ') : ''}
+                        {localize(e.title)}
                       </button>
                     ))}
                 </>
@@ -181,44 +229,71 @@ export default function Schedule({ showInfo }) {
       ) : (
         <div className="event-list">
           {events
-            .filter((e) => Number(e.date.slice(5, 7)) === month + 1)
+            .filter((e) => view === 'agenda' || Number(e.date.slice(5, 7)) === month + 1)
             .map((e) => (
-              <article className="archive-panel event-card" key={e.id}>
-                <img src={`/images/fan-photos/${e.image}`} alt="Ảnh minh họa JuniorMark" />
+              <article className="archive-panel event-card" id={`event-${e.id}`} key={e.id}>
+                <img
+                  src={photoPath(e.image)}
+                  alt={tr('Ảnh minh họa JuniorMark', 'JuniorMark illustration')}
+                />
                 <div>
                   <span className="eyebrow">
-                    {e.date.split('-').reverse().join('/')} • {e.demo ? 'LỊCH MẪU' : 'SINH NHẬT'}
+                    {e.date.split('-').reverse().join('/')} •{' '}
+                    {e.demo
+                      ? tr('MINH HỌA · LỊCH MẪU', 'DEMO / SAMPLE · SAMPLE CALENDAR')
+                      : tr(
+                          'CHƯA XÁC NHẬN · Nhắc sinh nhật từ kho lưu trữ',
+                          'UNCONFIRMED · Archive birthday reminder',
+                        )}
                   </span>
-                  <h3>{e.title}</h3>
+                  <h3>{localize(e.title)}</h3>
                   <p>
                     {e.demo
-                      ? 'Nội dung từ bản thiết kế, chưa xác nhận ngày giờ hoặc địa điểm.'
-                      : e.description}
+                      ? tr(
+                          'Nội dung từ bản thiết kế, chưa xác nhận ngày giờ hoặc địa điểm.',
+                          'Design sample; date, time and location are unconfirmed.',
+                        )
+                      : localize(e.description)}
                   </p>
                   <button className="secondary-button" onClick={() => save([e])}>
-                    Lưu vào lịch ↓
+                    {' '}
+                    {tr('Lưu vào lịch ↓', 'Save to calendar ↓')}{' '}
                   </button>
+                  <SaveToOrbit
+                    kind="event"
+                    id={`${e.id}-${e.date}`}
+                    payload={{ title: e.title, date: e.date, demo: Boolean(e.demo) }}
+                  />
                 </div>
               </article>
             ))}
-          {!events.some((e) => Number(e.date.slice(5, 7)) === month + 1) && (
-            <Empty>Chưa có sự kiện trong tháng này.</Empty>
+          {!events.some((e) => view === 'agenda' || Number(e.date.slice(5, 7)) === month + 1) && (
+            <Empty>{tr('Chưa có sự kiện trong tháng này.', 'No events this month.')}</Empty>
           )}
         </div>
       )}
       <div className="three-columns schedule-tips">
         {[
           [
-            'Quy chuẩn fandom',
-            'Theo dõi quy định riêng của đơn vị tổ chức về banner, máy ảnh và đồ mang vào.',
+            tr('Quy chuẩn fandom', 'Fandom guidelines'),
+            tr(
+              'Theo dõi quy định riêng của đơn vị tổ chức về banner, máy ảnh và đồ mang vào.',
+              'Check the organizer’s rules for banners, cameras and permitted items.',
+            ),
           ],
           [
-            'Di chuyển & địa điểm',
-            'Kiểm tra địa chỉ trên thông báo chính thức trước khi lên lịch đi lại.',
+            tr('Di chuyển & địa điểm', 'Travel & venue'),
+            tr(
+              'Kiểm tra địa chỉ trên thông báo chính thức trước khi lên lịch đi lại.',
+              'Check the address in the official announcement before planning travel.',
+            ),
           ],
           [
-            'Theo dõi thông báo',
-            'Lịch trong fansite không thay thế thông báo của GMMTV hoặc đơn vị tổ chức.',
+            tr('Theo dõi thông báo', 'Follow announcements'),
+            tr(
+              'Lịch trong fansite không thay thế thông báo của GMMTV hoặc đơn vị tổ chức.',
+              'The fansite calendar does not replace announcements from GMMTV or event organizers.',
+            ),
           ],
         ].map(([h, p]) => (
           <article className="archive-panel" key={h}>

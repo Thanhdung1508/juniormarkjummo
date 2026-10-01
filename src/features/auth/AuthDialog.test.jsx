@@ -1,28 +1,41 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { setLanguage } from '../../i18n/language'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import AuthDialog from './AuthDialog'
 
 function enterCredentials() {
   fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'fan@example.com' } })
-  fireEvent.change(screen.getByLabelText('Mật khẩu', { exact: true }), { target: { value: 'safePass123' } })
+  fireEvent.change(screen.getByLabelText('Mật khẩu', { exact: true }), {
+    target: { value: 'safePass123' },
+  })
 }
 describe('Biểu mẫu tài khoản', () => {
   it('đóng hộp thoại khi đăng nhập thành công', async () => {
     const onClose = vi.fn()
-    render(<AuthDialog mode="signin" auth={{ configured: true, signIn: async () => ({ session: { user: { id: 'fan' } } }) }} onClose={onClose} />)
+    render(
+      <AuthDialog
+        mode="signin"
+        auth={{ configured: true, signIn: async () => ({ session: { user: { id: 'fan' } } }) }}
+        onClose={onClose}
+      />,
+    )
     enterCredentials()
     fireEvent.click(screen.getByRole('button', { name: 'Đăng nhập', exact: true }))
     await waitFor(() => expect(onClose).toHaveBeenCalledTimes(1))
   })
   it('đóng hộp thoại khi đăng ký trả về session, chặn gửi lặp khi chờ', async () => {
     let finish
-    const pending = new Promise((resolve) => { finish = resolve })
+    const pending = new Promise((resolve) => {
+      finish = resolve
+    })
     const onClose = vi.fn()
     const signUp = vi.fn(() => pending)
     render(<AuthDialog mode="signup" auth={{ configured: true, signUp }} onClose={onClose} />)
     enterCredentials()
     fireEvent.change(screen.getByLabelText('Tên hiển thị'), { target: { value: 'Jummo' } })
-    fireEvent.change(screen.getByLabelText('Xác nhận mật khẩu'), { target: { value: 'safePass123' } })
+    fireEvent.change(screen.getByLabelText('Xác nhận mật khẩu'), {
+      target: { value: 'safePass123' },
+    })
     fireEvent.click(screen.getByRole('button', { name: 'Tạo tài khoản', exact: true }))
     expect(screen.getByRole('button', { name: 'Đang xử lý…' })).toBeDisabled()
     finish({ session: { user: { id: 'fan' } } })
@@ -36,7 +49,18 @@ describe('Biểu mẫu tài khoản', () => {
   })
   it('hiển thị lỗi đăng nhập và giữ hộp thoại mở', async () => {
     const onClose = vi.fn()
-    render(<AuthDialog mode="signin" auth={{ configured: true, signIn: async () => { throw new Error('Email hoặc mật khẩu chưa đúng.') } }} onClose={onClose} />)
+    render(
+      <AuthDialog
+        mode="signin"
+        auth={{
+          configured: true,
+          signIn: async () => {
+            throw new Error('Email hoặc mật khẩu chưa đúng.')
+          },
+        }}
+        onClose={onClose}
+      />,
+    )
     enterCredentials()
     fireEvent.click(screen.getByRole('button', { name: 'Đăng nhập', exact: true }))
     expect(await screen.findByRole('alert')).toHaveTextContent('Email hoặc mật khẩu chưa đúng.')
@@ -44,12 +68,32 @@ describe('Biểu mẫu tài khoản', () => {
   })
   it('chờ xác nhận email sau đăng ký, không coi là đã đăng nhập', async () => {
     const onClose = vi.fn()
-    render(<AuthDialog mode="signup" auth={{ configured: true, signUp: async () => ({ session: null, user: {} }) }} onClose={onClose} />)
+    render(
+      <AuthDialog
+        mode="signup"
+        auth={{ configured: true, signUp: async () => ({ session: null, user: {} }) }}
+        onClose={onClose}
+      />,
+    )
     enterCredentials()
     fireEvent.change(screen.getByLabelText('Tên hiển thị'), { target: { value: 'Jummo' } })
-    fireEvent.change(screen.getByLabelText('Xác nhận mật khẩu'), { target: { value: 'safePass123' } })
+    fireEvent.change(screen.getByLabelText('Xác nhận mật khẩu'), {
+      target: { value: 'safePass123' },
+    })
     fireEvent.click(screen.getByRole('button', { name: 'Tạo tài khoản', exact: true }))
     await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('kiểm tra hộp thư'))
     expect(onClose).not.toHaveBeenCalled()
   })
+})
+
+afterEach(() => act(() => setLanguage('vi')))
+it('switches form labels and existing validation without changing entered values', () => {
+  render(<AuthDialog mode="signup" auth={{ configured: true }} onClose={() => {}} />)
+  fireEvent.change(screen.getByLabelText('Tên hiển thị'), { target: { value: 'Ghi chú' } })
+  fireEvent.click(screen.getByRole('button', { name: 'Tạo tài khoản', exact: true }))
+  expect(screen.getByText('Nhập địa chỉ email hợp lệ.')).toBeInTheDocument()
+  act(() => setLanguage('en'))
+  expect(screen.getByLabelText('Display name')).toHaveValue('Ghi chú')
+  expect(screen.getByText('Enter a valid email address.')).toBeInTheDocument()
+  expect(screen.getByRole('button', { name: 'Create account', exact: true })).toBeInTheDocument()
 })

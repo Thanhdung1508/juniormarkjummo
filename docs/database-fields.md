@@ -1,5 +1,17 @@
 # Danh mục bảng và trường
 
+## Bổ sung tài khoản — migration 006
+
+`fan_profiles.bio`: text, tối đa 500 ký tự, giới thiệu cá nhân.
+
+| Bảng | Trường | Ý nghĩa |
+| --- | --- | --- |
+| archive_items | user_id, kind, item_id, payload | Chủ tài khoản, loại nội dung, mã nội dung, thông tin hiển thị JSON; khóa kép ngăn lưu trùng |
+| user_settings | user_id, show_country, updated_at | Chủ tài khoản, hiển thị quốc gia trên lời nhắn mới, thời điểm cập nhật |
+| user_notes | id, user_id, title, body, created_at, updated_at | Mã ghi chú, chủ sở hữu, tiêu đề, nội dung, ngày tạo/sửa |
+
+`archive_items.kind` nhận `memory`, `event`, `favorite`, `progress`, `photo`, `page`. Ghi chú/settings/archive áp dụng RLS riêng từng tài khoản. Danh mục máy đọc đầy đủ ở `database-schema.json` đã được xuất lại từ database local.
+
 Xuất từ database `juniormark` trên PostgreSQL local. Tất cả tên dùng tiếng Anh; cột giải thích dùng tiếng Việt. Chỉ gồm schema nghiệp vụ `public` và schema nội bộ `private`.
 
 Các quan hệ, quyền và giá trị CHECK xem trong `supabase/001_...sql` đến `005_...sql`. Bảng có `status` biên tập dùng `draft/published/archived`; riêng lời nhắn dùng `pending/approved/rejected`.

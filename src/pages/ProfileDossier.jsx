@@ -1,43 +1,40 @@
+import { t as tr, useLanguage, localize } from '../i18n/language'
+import { catalog, birthdayLabel } from '../data/catalog'
 import { useState } from 'react'
 import Dialog from '../components/Dialog'
 import { eras } from './journeyData'
+import ArtistSources from '../components/ArtistSources'
 
-const data = {
-  junior: {
-    name: 'Junior Panachai',
-    label: 'SOLAR EMBER',
-    image: '/images/junior-stage.png',
-    birthday: '23/10',
-    color: 'Sun Flare Gold',
-    role: 'Ánh Dương • Sun',
-    intro: 'Góc hồ sơ Junior: diễn xuất, sân khấu và những câu chuyện trong hành trình JuniorMark.',
-  },
-  mark: {
-    name: 'Mark Jiruntanin',
-    label: 'LUNAR MELODY',
-    image: '/images/mark-stage.png',
-    birthday: '15/06',
-    color: 'Cosmic Blue',
-    role: 'Ánh Nguyệt • Moon',
-    intro: 'Góc hồ sơ Mark: vai diễn, giai điệu và những dấu mốc được fandom lưu giữ.',
-  },
-  jummo: {
-    name: 'Jummo Mascot',
-    label: 'CELESTIAL GUARDIAN',
-    image: '/images/jummo-mascot.png',
-    birthday: 'Chưa xác minh',
-    color: 'Sun Gold & Cosmic Blue',
-    role: 'Sun & Moon Companion',
-    intro: 'Linh vật hướng dương kết nối hai sắc màu của JuniorMark.',
-  },
-}
+const data = Object.fromEntries(
+  catalog.artists.map((a) => [
+    a.id,
+    {
+      ...a,
+      image: a.stage_image,
+      birthday: birthdayLabel(a.birthday),
+      color: a.color_label,
+      role: a.role_label,
+      intro: a.bio,
+    },
+  ]),
+)
 export default function ProfileDossier({ person, onClose }) {
+  useLanguage()
   // Ba tab chỉ thay nội dung bên trong modal; đóng modal giữ nguyên nhân vật ở sân khấu.
   const [tab, setTab] = useState('overview'),
     p = data[person]
+  if (!p) return null
   return (
-    <Dialog title={`Celestial File • ${p.name}`} onClose={onClose} className="profile-dossier">
-      <div className="dossier-tabs" role="tablist" aria-label="Nội dung hồ sơ">
+    <Dialog
+      title={`${tr('Hồ sơ tinh tú', 'Celestial File')} • ${p.name}`}
+      onClose={onClose}
+      className="profile-dossier"
+    >
+      <div
+        className="dossier-tabs"
+        role="tablist"
+        aria-label={tr('Nội dung hồ sơ', 'Profile contents')}
+      >
         {['overview', 'filmography', 'discography'].map((t) => (
           <button
             role="tab"
@@ -56,7 +53,13 @@ export default function ProfileDossier({ person, onClose }) {
               }
             }}
           >
-            {t[0].toUpperCase() + t.slice(1)}
+            {
+              {
+                overview: tr('Tổng quan', 'Overview'),
+                filmography: tr('Vai diễn', 'Filmography'),
+                discography: tr('Bản thu', 'Discography'),
+              }[t]
+            }
           </button>
         ))}
       </div>
@@ -65,48 +68,64 @@ export default function ProfileDossier({ person, onClose }) {
           <>
             <div className="dossier-overview">
               <aside className="dossier-portrait">
-                <span className="eyebrow">{p.label}</span>
+                <span className="eyebrow">{localize(p.label)}</span>
                 <img src={p.image} alt={p.name} />
-                <strong>{p.role}</strong>
+                <strong>{localize(p.role)}</strong>
               </aside>
               <div>
                 <h2>{p.name} ✦</h2>
-                <p className="blue">{person === 'jummo' ? 'Studio Mascot' : 'GMMTV Artist'}</p>
+                <p className="blue">
+                  {person === 'jummo'
+                    ? tr('Linh vật', 'Studio Mascot')
+                    : tr('Nghệ sĩ GMMTV', 'GMMTV Artist')}
+                </p>
                 <dl className="dossier-facts">
                   {[
-                    ['Tên hiển thị', p.name],
-                    ['Sinh nhật', p.birthday],
-                    ['Hình tượng', p.role],
-                    ['Không gian', 'JuniorMark Celestial'],
-                    ['Màu thiết kế', p.color],
-                    ['Hồ sơ', 'Fan archive'],
+                    [tr('Họ tên', 'Full name'), p.full_name_english || p.name],
+                    [tr('Sinh nhật', 'Birthday'), p.birthday],
+                    [tr('Hình tượng', 'Persona'), p.role],
+                    [tr('Không gian', 'Space'), 'JuniorMark Celestial'],
+                    [tr('Màu thiết kế', 'Design colors'), p.color],
+                    [tr('Hồ sơ', 'Profile'), tr('Kho lưu trữ của người hâm mộ', 'Fan archive')],
                   ].map(([label, value]) => (
                     <div key={label}>
                       <dt>{label}</dt>
-                      <dd>{value}</dd>
+                      <dd>{localize(value)}</dd>
                     </div>
                   ))}
                 </dl>
-                <p>{p.intro}</p>
+                <p>{localize(p.intro)}</p>
+                <ArtistSources artist={p} />
                 <a
                   className="secondary-button"
                   href={person === 'jummo' ? '#/jummo' : `#/profiles/${person}`}
                   onClick={onClose}
                 >
-                  Xem trang đầy đủ ↗
+                  {' '}
+                  {tr('Xem trang đầy đủ ↗', 'View full page ↗')}{' '}
                 </a>
               </div>
             </div>
             <div className="three-columns dossier-traits">
-              {['Sắc màu riêng', 'Dấu mốc hành trình', 'Celestial Harmony'].map((t, i) => (
+              {[
+                tr('Sắc màu riêng', 'Personal colors'),
+                tr('Dấu mốc hành trình', 'Journey milestones'),
+                tr('Hòa Điệu Tinh Tú', 'Celestial Harmony'),
+              ].map((t, i) => (
                 <article className="archive-panel" key={t}>
                   <h3>{t}</h3>
                   <p>
                     {
                       [
-                        p.role,
-                        'Những vai diễn và ký ức được lưu lại cùng fandom.',
-                        'Kết nối Junior, Mark và Jummo trong một góc nhỏ ấm áp.',
+                        localize(p.role),
+                        tr(
+                          'Những vai diễn và ký ức được lưu lại cùng fandom.',
+                          'Roles and memories preserved with the fandom.',
+                        ),
+                        tr(
+                          'Kết nối Junior, Mark và Jummo trong một góc nhỏ ấm áp.',
+                          'Connecting Junior, Mark and Jummo in a warm little corner.',
+                        ),
                       ][i]
                     }
                   </p>
@@ -117,25 +136,38 @@ export default function ProfileDossier({ person, onClose }) {
         ) : tab === 'filmography' ? (
           <div className="dossier-films">
             {person === 'jummo' ? (
-              <p>Jummo là linh vật, chưa có danh sách vai diễn.</p>
+              <p>
+                {tr(
+                  'Jummo là linh vật, chưa có danh sách vai diễn.',
+                  'Jummo is a mascot and has no acting credits yet.',
+                )}
+              </p>
             ) : (
               eras
-                .filter((e) => e.id !== 'fancon')
+                .filter((e) => e.id !== 'fancon' && e.people.includes(person))
                 .map((e) => (
                   <article className="archive-panel" key={e.id}>
-                    <span className="eyebrow">{e.year}</span>
+                    <span className="eyebrow">{localize(e.year)}</span>
                     <h3>{e.title}</h3>
-                    <p>{person === 'junior' ? e.roles.split(' & ')[0] : e.roles.split(' & ')[1]}</p>
+                    <p>
+                      {
+                        catalog.work_roles.find((r) => r.work_id === e.id && r.artist_id === person)
+                          ?.role_name
+                      }
+                    </p>
                   </article>
                 ))
             )}
           </div>
         ) : (
           <div className="archive-panel">
-            <h3>Discography & Audio Archive</h3>
+            <h3>{tr('Danh Sách Bản Thu Và Kho Âm Thanh', 'Discography & Audio Archive')}</h3>
             <p>
-              Chưa có danh sách bản thu được xác minh và file audio. Các tên bài trong mẫu không
-              được coi là đĩa nhạc chính thức.
+              {' '}
+              {tr(
+                'Bạn có thể nghe danh sách nhạc tại Phòng thu. Danh sách tác phẩm đầy đủ và nguồn phát hành đang được bổ sung; playlist không phải đĩa nhạc chính thức của riêng nghệ sĩ.',
+                'Listen to the playlist in the Studio. A complete discography and release sources are being compiled; the playlist is not this artist’s official discography.',
+              )}{' '}
             </p>
             <a
               className="secondary-button"
@@ -143,7 +175,8 @@ export default function ProfileDossier({ person, onClose }) {
               target="_blank"
               rel="noreferrer"
             >
-              Khám phá kênh GMMTV ↗
+              {' '}
+              {tr('Khám phá kênh GMMTV ↗', 'Explore the GMMTV channel ↗')}{' '}
             </a>
           </div>
         )}

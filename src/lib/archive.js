@@ -1,3 +1,4 @@
+import { t, localize, getLanguage } from '../i18n/language'
 // Hàm thuần cho tìm kiếm, lịch và kiểm tra nội dung; không phụ thuộc giao diện.
 export const normalize = (s = '') =>
   s
@@ -11,7 +12,7 @@ export function filterPhotos(items, { query = '', person = 'all', topic = 'all' 
     (p) =>
       (person === 'all' || p.person === person) &&
       (topic === 'all' || p.topic === topic) &&
-      normalize(`${p.title} ${p.alt || ''} ${p.credit || ''}`).includes(normalize(query.trim())),
+      normalize(`${p.title} ${p.alt || ''} ${p.credit || ''} ${localize(p.title)} ${localize(p.alt || '')} ${localize(p.credit || '')}`).includes(normalize(query.trim())),
   )
 }
 export function calendarCells(year, month) {
@@ -37,15 +38,15 @@ export function eventCalendar(events) {
       `DTSTAMP:${stamp}`,
       `DTSTART;VALUE=DATE:${e.date.replace(/-/g, '')}`,
       `DTEND;VALUE=DATE:${end.toISOString().slice(0, 10).replace(/-/g, '')}`,
-      `SUMMARY:${escapeICS(e.title)}`,
-      `DESCRIPTION:${escapeICS(e.demo ? 'Lịch minh họa thiết kế, không phải sự kiện xác nhận.' : e.description || '')}`,
+      `SUMMARY:${escapeICS(localize(e.title))}`,
+      `DESCRIPTION:${escapeICS(e.demo ? t('Lịch minh họa thiết kế, không phải sự kiện xác nhận.', 'Illustrative schedule, not a confirmed event.') : localize(e.description) || '')}`,
       'END:VEVENT',
     ]
   })
   return [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//JuniorMark Fansite//Calendar//VI',
+    `PRODID:-//JuniorMark Fansite//Calendar//${getLanguage().toUpperCase()}`,
     ...rows,
     'END:VCALENDAR',
   ].join('\r\n')
@@ -60,11 +61,19 @@ export function downloadText(name, content, type = 'text/plain;charset=utf-8') {
 }
 export function validateMessage({ name = '', country = '', body = '', spectrum = '' }) {
   if (name.trim().length < 2 || name.trim().length > 50)
-    return 'Tên hiển thị cần từ 2 đến 50 ký tự.'
+    return t(
+      'Tên hiển thị cần từ 2 đến 50 ký tự.',
+      'Your display name must contain 2–50 characters.',
+    )
   if (!country.trim() || country.trim().length > 60)
-    return 'Nhập quốc gia / thành phố, tối đa 60 ký tự.'
-  if (!body.trim() || body.trim().length > 200) return 'Lời nhắn cần từ 1 đến 200 ký tự.'
-  if (!['junior', 'mark', 'jummo'].includes(spectrum)) return 'Chọn một bản sắc tinh tú.'
+    return t(
+      'Nhập quốc gia / thành phố, tối đa 60 ký tự.',
+      'Enter your country or city, up to 60 characters.',
+    )
+  if (!body.trim() || body.trim().length > 200)
+    return t('Lời nhắn cần từ 1 đến 200 ký tự.', 'Your message must contain 1–200 characters.')
+  if (!['junior', 'mark', 'jummo'].includes(spectrum))
+    return t('Chọn một bản sắc tinh tú.', 'Choose a star identity.')
   return ''
 }
 // Kết quả theo số lựa chọn; hòa điểm chọn Jummo (kết nối cả hai sắc màu).

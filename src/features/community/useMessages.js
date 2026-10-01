@@ -1,13 +1,15 @@
+import { t, useLanguage, localize } from '../../i18n/language'
 import { useEffect, useRef, useState } from 'react'
-import { supabase } from '../../lib/supabase'
+import { apiClient } from '../../lib/apiClient'
 import { validateMessage } from '../../lib/archive'
 
 // Chưa cấu hình: lưu bản xem thử trên máy. Có cấu hình: chỉ đọc bài đã duyệt, gửi bài ở pending.
 export default function useMessages(kind, userId) {
+  useLanguage()
   const key = `jm-demo-${kind}`,
     busyRef = useRef(false)
   const [messages, setMessages] = useState(() => {
-      if (supabase) return []
+      if (apiClient) return []
       try {
         const saved = JSON.parse(localStorage.getItem(key) || '[]')
         return Array.isArray(saved)
@@ -21,8 +23,8 @@ export default function useMessages(kind, userId) {
     [busy, setBusy] = useState(false)
   useEffect(() => {
     let active = true
-    if (!supabase) return
-    supabase
+    if (!apiClient) return
+    apiClient
       .from('fan_messages')
       .select('id,name,country,body,spectrum,created_at')
       .eq('kind', kind)
@@ -32,7 +34,14 @@ export default function useMessages(kind, userId) {
       .then(({ data, error: e }) => {
         if (active) {
           setMessages(data || [])
-          setError(e ? 'Chưa tải được lời nhắn. Kiểm tra kết nối và migration cộng đồng.' : '')
+          setError(
+            e
+              ? t(
+                  'Chưa tải được lời nhắn. Kiểm tra kết nối và migration cộng đồng.',
+                  'Messages could not load. Please check your connection and try again.',
+                )
+              : '',
+          )
         }
       })
     return () => {
@@ -52,13 +61,22 @@ export default function useMessages(kind, userId) {
         body: form.body.trim(),
         spectrum: form.spectrum,
       }
-      if (supabase) {
-        if (!userId) throw new Error('Đăng nhập để gửi lời nhắn.')
-        const { error: e } = await supabase
+      if (apiClient) {
+        if (!userId) throw new Error(t('Đăng nhập để gửi lời nhắn.', 'Sign in to send a message.'))
+        const { error: e } = await apiClient
           .from('fan_messages')
           .insert({ ...message, kind, user_id: userId })
-        if (e) throw new Error('Chưa gửi được lời nhắn. Thử lại hoặc kiểm tra cấu hình cộng đồng.')
-        return 'Đã gửi lời nhắn, đang chờ quản trị viên duyệt.'
+        if (e)
+          throw new Error(
+            t(
+              'Chưa gửi được lời nhắn. Thử lại hoặc kiểm tra cấu hình cộng đồng.',
+              'Your message could not be sent. Please try again.',
+            ),
+          )
+        return t(
+          'Đã gửi lời nhắn, đang chờ quản trị viên duyệt.',
+          'Message sent and awaiting moderator approval.',
+        )
       }
       const next = [
         { ...message, id: crypto.randomUUID(), created_at: new Date().toISOString() },
@@ -67,14 +85,22 @@ export default function useMessages(kind, userId) {
       try {
         localStorage.setItem(key, JSON.stringify(next))
       } catch {
-        throw new Error('Trình duyệt không cho lưu bản xem thử. Nội dung chưa được lưu.')
+        throw new Error(
+          t(
+            'Trình duyệt không cho lưu bản xem thử. Nội dung chưa được lưu.',
+            'Your browser could not save the preview. Your content has not been saved.',
+          ),
+        )
       }
       setMessages(next)
-      return 'Đã lưu bản xem thử trên trình duyệt này. Chưa công khai lên cộng đồng.'
+      return t(
+        'Đã lưu bản xem thử trên trình duyệt này. Chưa công khai lên cộng đồng.',
+        'Preview saved in this browser. It has not been published to the community.',
+      )
     } finally {
       busyRef.current = false
       setBusy(false)
     }
   }
-  return { messages, error, busy, submit, demo: !supabase }
+  return { messages, error: localize(error), busy, submit, demo: !apiClient }
 }

@@ -1,8 +1,10 @@
+import { t, useLanguage, localize } from '../i18n/language'
 import { useEffect, useRef } from 'react'
 import { X } from 'lucide-react'
 
 // Native dialog giữ focus trong hộp thoại, hỗ trợ Escape và làm nền inert.
 export default function Dialog({ title, onClose, children, className = '' }) {
+  useLanguage()
   const ref = useRef(null)
   useEffect(() => {
     const dialog = ref.current
@@ -19,8 +21,8 @@ export default function Dialog({ title, onClose, children, className = '' }) {
   return <dialog ref={ref} className={`dialog ${className}`} aria-labelledby="dialog-title"
     onCancel={(event) => { event.preventDefault(); onClose() }}
     onClick={(event) => { if (event.target === event.currentTarget) { const r = event.currentTarget.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) onClose() } }}>
-    <button className="icon-button dialog-close" aria-label="Đóng" onClick={onClose}><X size={20} /></button>
-    <h2 id="dialog-title">{title}</h2>
+    <button className="icon-button dialog-close" aria-label={t("Đóng", "Close")} onClick={onClose}><X size={20} /></button>
+    <h2 id="dialog-title">{localize(title)}</h2>
     {children}
   </dialog>
 }
